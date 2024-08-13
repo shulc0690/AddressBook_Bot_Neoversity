@@ -1,6 +1,14 @@
 from models import AddressBook
 from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays
 import pickle
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import WordCompleter
+
+# Список доступних команд
+COMMANDS = ['hello', 'add', 'change', 'phone', 'all', 'add-birthday', 'show-birthday', 'birthdays', 'close', 'exit', 'q']
+
+# Автозаповнення команд
+command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
 def save_data(book, filename="addressbook.pkl"):
     with open(filename, 'wb') as file:
@@ -14,12 +22,18 @@ def load_data(filename="addressbook.pkl"):
         return AddressBook()        
 
 def main():
-    """Start program."""
-    book = load_data()
-    print("Welcome to the assistant bot!")
 
-    while True: 
-        user_input = input("Enter a command: ")
+    book = AddressBook()
+    session = PromptSession(completer=command_completer)
+
+    print("It's alive! It's alive!")
+
+    while True:
+        user_input = session.prompt("Enter a command: ")
+        if not user_input.strip():
+            print("No command entered. Please enter a command.")
+            continue
+
         command, *args = parse_input(user_input)
 
         if command in ["close", "exit", "q"]:
