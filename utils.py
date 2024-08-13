@@ -20,31 +20,56 @@ def parse_input(user_input):
 
 @input_error
 def add_contact(args, book: AddressBook):
-    if not args or not args[0].strip():  # Перевірка на пусте ім'я
-        return "Error: Name cannot be empty. Please provide a valid name."
-
+    # Перевірка на те, що введено лише ім'я без додаткового тексту
+    if not args or not args[0].strip() or len(args) > 1:
+        return "Error: Name must be a single word without spaces. Please provide a valid name."
     name = args[0].strip()
     record = book.find(name)
     message = "Contact updated."
+    
     if record is None:
         record = Record(name)
         book.add_record(record)
         message = "Contact added."
 
-    # Запит на номер телефону
-    phone = input("Enter phone number (or press Enter to skip): ").strip()
-    if phone:
-        record.add_phone(phone)
+    # Введення номера телефону з двома спробами
+    for i in range(2):
+        phone = input("Enter phone number (10 digits) (or press Enter to skip): ").strip()
+        if not phone:
+            break
+        try:
+            record.add_phone(phone)
+            break
+        except ValueError as e:
+            print(e)
+    else:
+        print("Failed to add a valid phone number. Skipping phone.")
 
-    # Запит на електронну адресу
-    email = input("Enter email address (or press Enter to skip): ").strip()
-    if email:
-        record.add_email(email)
+    # Введення електронної адреси з двома спробами
+    # for i in range(2):
+    #     email = input("Enter email address (or press Enter to skip): ").strip()
+    #     if not email:
+    #         break
+    #     try:
+    #         record.add_email(email)
+    #         break
+    #     except ValueError as e:
+    #         print(e)
+    # else:
+    #     print("Failed to add a valid email address. Skipping email.")
 
-    # Запит на дату народження
-    birthday = input("Enter birthday (DD.MM.YYYY) (or press Enter to skip): ").strip()
-    if birthday:
-        record.add_birthday(birthday)
+    # Введення дати народження з двома спробами
+    for i in range(2):
+        birthday = input("Enter birthday (DD.MM.YYYY) (or press Enter to skip): ").strip()
+        if not birthday:
+            break
+        try:
+            record.add_birthday(birthday)
+            break
+        except ValueError as e:
+            print(e)
+    else:
+        print("Failed to add a valid birthday. Skipping birthday.")
 
     return message
 
