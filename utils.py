@@ -20,17 +20,32 @@ def parse_input(user_input):
 
 @input_error
 def add_contact(args, book: AddressBook):
-    """Function create new contact."""
-    name, phone, *_ = args
+    if not args or not args[0].strip():  # Перевірка на пусте ім'я
+        return "Error: Name cannot be empty. Please provide a valid name."
+
+    name = args[0].strip()
     record = book.find(name)
     message = "Contact updated."
-
     if record is None:
         record = Record(name)
         book.add_record(record)
         message = "Contact added."
+
+    # Запит на номер телефону
+    phone = input("Enter phone number (or press Enter to skip): ").strip()
     if phone:
         record.add_phone(phone)
+
+    # Запит на електронну адресу
+    email = input("Enter email address (or press Enter to skip): ").strip()
+    if email:
+        record.add_email(email)
+
+    # Запит на дату народження
+    birthday = input("Enter birthday (DD.MM.YYYY) (or press Enter to skip): ").strip()
+    if birthday:
+        record.add_birthday(birthday)
+
     return message
 
 @input_error
