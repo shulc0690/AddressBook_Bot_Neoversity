@@ -1,5 +1,6 @@
 from models import AddressBook, Birthday, Record
 
+
 def input_error(func):
     """Validator on exceptions."""
     def inner(*args, **kwargs):
@@ -11,6 +12,7 @@ def input_error(func):
             return err
     return inner
 
+
 @input_error
 def parse_input(user_input):
     """Function parses input."""
@@ -18,23 +20,23 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+
 @input_error
 def add_contact(args, book: AddressBook):
-    # Перевірка на те, що введено лише ім'я без додаткового тексту
     if not args or not args[0].strip() or len(args) > 1:
         return "Error: Name must be a single word without spaces. Please provide a valid name."
     name = args[0].strip()
     record = book.find(name)
     message = "Contact updated."
-    
+
     if record is None:
         record = Record(name)
         book.add_record(record)
         message = "Contact added."
 
-    # Введення номера телефону з двома спробами
     for i in range(2):
-        phone = input("Enter phone number (10 digits) (or press Enter to skip): ").strip()
+        phone = input(
+            "Enter phone number (10 digits) (or press Enter to skip): ").strip()
         if not phone:
             break
         try:
@@ -42,25 +44,27 @@ def add_contact(args, book: AddressBook):
             break
         except ValueError as e:
             print(e)
-    else:
-        print("Failed to add a valid phone number. Skipping phone.")
 
-    # Введення електронної адреси з двома спробами
-    # for i in range(2):
-    #     email = input("Enter email address (or press Enter to skip): ").strip()
-    #     if not email:
-    #         break
-    #     try:
-    #         record.add_email(email)
-    #         break
-    #     except ValueError as e:
-    #         print(e)
-    # else:
-    #     print("Failed to add a valid email address. Skipping email.")
-
-    # Введення дати народження з двома спробами
     for i in range(2):
-        birthday = input("Enter birthday (DD.MM.YYYY) (or press Enter to skip): ").strip()
+        email = input("Enter email address (or press Enter to skip): ").strip()
+        if not email:
+            break
+        try:
+            record.add_email(email)
+            break
+        except ValueError as e:
+            print(e)
+
+    for i in range(2):
+        address = input("Enter address (or press Enter to skip): ").strip()
+        if not address:
+            break
+        record.add_address(address)
+        break
+
+    for i in range(2):
+        birthday = input(
+            "Enter birthday (DD.MM.YYYY) (or press Enter to skip): ").strip()
         if not birthday:
             break
         try:
@@ -68,10 +72,9 @@ def add_contact(args, book: AddressBook):
             break
         except ValueError as e:
             print(e)
-    else:
-        print("Failed to add a valid birthday. Skipping birthday.")
 
     return message
+
 
 @input_error
 def change_contact(args, book: AddressBook):
@@ -86,6 +89,7 @@ def change_contact(args, book: AddressBook):
         record.edit_phone(old_phone, new_phone)
     return message
 
+
 @input_error
 def get_contact(args, book: AddressBook):
     """Function get phone for existing contact."""
@@ -95,11 +99,13 @@ def get_contact(args, book: AddressBook):
         return "Contact does not exists."
     return record
 
+
 def show_contacts(book: AddressBook):
     """Function returns all contacts."""
     if len(book) == 0:
         return "Contact list is empty."
     return book
+
 
 @input_error
 def add_birthday(args, book):
@@ -112,6 +118,7 @@ def add_birthday(args, book):
         record.add_birthday(Birthday(birthday))
     return message
 
+
 @input_error
 def show_birthday(args, book):
     name, *_ = args
@@ -119,6 +126,7 @@ def show_birthday(args, book):
     if record is None:
         return "Contact does not exists."
     return record.birthday.value.strftime('%d.%m.%Y')
+
 
 @input_error
 def birthdays(book):

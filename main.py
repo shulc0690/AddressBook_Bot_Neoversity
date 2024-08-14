@@ -5,25 +5,28 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
-COMMANDS = ['hello', 'add', 'change', 'phone', 'all', 'add-birthday', 'show-birthday', 'birthdays', 'close', 'exit', 'q']
+COMMANDS = ['hello', 'add', 'change', 'phone', 'all',
+            'add-birthday', 'show-birthday', 'birthdays', 'close', 'exit', 'q']
 
 # Автозаповнення команд
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
+
 def save_data(book, filename="addressbook.pkl"):
     with open(filename, 'wb') as file:
         pickle.dump(book, file)
+
 
 def load_data(filename="addressbook.pkl"):
     try:
         with open(filename, "rb") as f:
             return pickle.load(f)
     except FileNotFoundError:
-        return AddressBook()        
+        return AddressBook()
+
 
 def main():
-
-    book = AddressBook()
+    book = load_data()
     session = PromptSession(completer=command_completer)
 
     print("It's alive! It's alive!")
@@ -53,13 +56,13 @@ def main():
             print(add_birthday(args, book))
         elif command == "show-birthday":
             print(show_birthday(args, book))
-
         elif command == "birthdays":
             print(birthdays(book))
         else:
             print("Invalid command.")
 
     save_data(book)
-    
+
+
 if __name__ == "__main__":
     main()
