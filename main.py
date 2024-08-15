@@ -1,12 +1,13 @@
 from models import AddressBook
-from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact
+from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact, change_email, delete_email, change_address, delete_address
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
 COMMANDS = ['hello', 'add-contact', 'change-phone', 'show-contact', 'show-address-book',
-            'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 'close', 'exit', 'q']
+            'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
+            'change-email', 'delete-email', 'change-address', 'delete-address', 'close', 'exit', 'q']
 
 # Автозаповнення команд
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
@@ -65,6 +66,14 @@ def main():
             print(edit_note_in_contact(args, book))
         elif command == "delete-note":
             print(delete_note_from_contact(args, book))
+        elif command == "change-email":
+            print(change_email(args, book))
+        elif command == "delete-email":
+            print(delete_email(args, book))
+        elif command == "change-address":
+            print(change_address(args, book))
+        elif command == "delete-address":
+            print(delete_address(args, book))
         else:
             print("Invalid command.")
 

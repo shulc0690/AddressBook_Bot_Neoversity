@@ -1,5 +1,6 @@
 from collections import UserDict
 from datetime import datetime
+import re
 
 
 class Field:
@@ -41,9 +42,19 @@ class Email(Field):
         self.validate_email()
 
     def validate_email(self):
-        if "@" not in self.value or "." not in self.value:
-            raise ValueError(
-                "Invalid email format. Please provide a valid email address.")
+        email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+        if not re.match(email_regex, self.value):
+            raise ValueError("Invalid email format. Please provide a valid email address.")
+
+# class Email(Field):
+#     def __init__(self, value):
+#         super().__init__(value)
+#         self.validate_email()
+
+#     def validate_email(self):
+#         if "@" not in self.value or "." not in self.value:
+#             raise ValueError(
+#                 "Invalid email format. Please provide a valid email address.")
 
 
 class Address(Field):
@@ -161,7 +172,7 @@ class AddressBook(UserDict):
     def __str__(self):
         contacts = []
         for record in self.data.values():
-            phones_str = '; '.join(p.value for p in record.phones)
+            phones_str = '; '.join(p.value for p in record.phones) if record.phones else "No phone"
             email_str = record.email.value if hasattr(
                 record, 'email') and record.email else "No email"
             address_str = record.address.value if hasattr(
