@@ -28,10 +28,6 @@ def load_data(filename="addressbook.pkl"):
 def main():
     book = load_data()
     
-    # for record in book.values():
-    #     if not hasattr(record, 'notes'):
-    #         record.notes = []
-    
     session = PromptSession(completer=command_completer)
 
     print("It's alive! It's alive!")
