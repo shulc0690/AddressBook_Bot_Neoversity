@@ -118,8 +118,14 @@ class Record:
         phones_str = '; '.join(p.value for p in self.phones)
         email_str = self.email.value if self.email else "No email"
         address_str = self.address.value if self.address else "No address"
-        birthday_str = self.birthday.value.strftime(
-            '%d.%m.%Y') if self.birthday else "No birthday"
+        
+        if isinstance(self.birthday, Birthday):
+            birthday_str = self.birthday.value.strftime('%d.%m.%Y')
+        elif isinstance(self.birthday, str):
+            birthday_str = self.birthday
+        else:
+            birthday_str = "No birthday"
+            
         notes_str = self.show_notes()
         return f"Name: {self.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}, Notes: {notes_str}"
 

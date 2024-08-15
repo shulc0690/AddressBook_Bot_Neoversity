@@ -5,7 +5,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
-COMMANDS = ['hello', 'add', 'change', 'phone', 'all',
+COMMANDS = ['hello', 'add-contact', 'change-phone', 'show-contact', 'show-address-book',
             'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 'close', 'exit', 'q']
 
 # Автозаповнення команд
@@ -45,13 +45,13 @@ def main():
             break
         elif command == "hello":
             print("How can I help you?")
-        elif command == "add":
+        elif command == "add-contact":
             print(add_contact(args, book))
-        elif command == "all":
+        elif command == "show-address-book":
             print(show_contacts(book))
-        elif command == "change":
+        elif command == "change-phone":
             print(change_contact(args, book))
-        elif command == "phone":
+        elif command == "show-contact":
             print(get_contact(args, book))
         elif command == "add-birthday":
             print(add_birthday(args, book))
