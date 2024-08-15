@@ -53,5 +53,9 @@ change-address John 123 Main St, Springfield
 Приклад:
 delete-address John
 
-
+____how to install package______________________________________________________________________________
+1. install all the stuff from requirements.txt
+2. build project - python setup.py sdist bdist_wheel
+3. install package - pip install .
+4. the command to run the bot - run-bot
 
