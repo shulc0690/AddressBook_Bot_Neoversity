@@ -77,7 +77,7 @@ def add_contact(args, book: AddressBook):
 
 
 @input_error
-def change_contact(args, book: AddressBook):
+def edit_contact(args, book: AddressBook):
     """Function changes existing contact."""
     name, old_phone, new_phone, *_ = args
     record = book.find(name)
@@ -93,6 +93,8 @@ def change_contact(args, book: AddressBook):
 @input_error
 def get_contact(args, book: AddressBook):
     """Function get phone for existing contact."""
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
     name, *_ = args
     record = book.find(name)
     if record is None:
@@ -100,7 +102,7 @@ def get_contact(args, book: AddressBook):
     return record
 
 
-def show_contacts(book: AddressBook):
+def show_address_book(book: AddressBook):
     """Function returns all contacts."""
     if len(book) == 0:
         return "Contact list is empty."
@@ -145,9 +147,43 @@ def add_note_to_contact(args, book: AddressBook):
 
     title = input("Enter note title: ").strip()
     content = input("Enter note content: ").strip()
-
+    tags = input("Enter tags (separated by commas):").strip().split(",")
     record.add_note(title, content)
+    record.notes[-1].add_tags([tag.strip() for tag in tags if tag.strip()])
     return "Note added successfully."
+
+def find_notes_by_tag(args, book: AddressBook):
+    if len(args) < 2:
+        return "Error: Please provide a contact name and a tag."
+    
+    name = args[0]
+    tag = args[1]
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    matching_notes = record.find_notes_by_tag(tag)
+    
+    if isinstance(matching_notes, str):  # якщо це повідомлення про помилку
+        return matching_notes
+    
+    return "\n".join(str(note) for note in matching_notes)
+
+@input_error
+def sort_notes_by_tags(args, book: AddressBook):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    
+    name = args[0]
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    sorted_notes = record.sort_notes_by_tags()
+    
+    return "\n".join(str(note) for note in sorted_notes)
 
 @input_error
 def edit_note_in_contact(args, book: AddressBook):
@@ -164,7 +200,7 @@ def edit_note_in_contact(args, book: AddressBook):
         return "This contact has no notes to edit."
     
     for i, note in enumerate(record.notes, start=1):
-        print(f"{i}. {note.title}: {note.content}")
+        print(f"{i}. {note.title}: {note.content} (Tags: {", ".join(note.tags)})")
     
     note_number = int(input("Enter the number of the note you want to edit: ").strip())
     if note_number < 1 or note_number > len(record.notes):
@@ -172,12 +208,13 @@ def edit_note_in_contact(args, book: AddressBook):
     
     title = input("Enter new note title (or press Enter to keep the current title): ").strip()
     content = input("Enter new note content (or press Enter to keep the current content): ").strip()
-    
+    tags = input("Enter new tags (separated by commas, or press Enter to keep current tags): ").strip().split(',')
     if title:
         record.notes[note_number - 1].title = title
     if content:
         record.notes[note_number - 1].content = content
-    
+    if tags:
+        record.notes[note_number - 1].tags = [tag.strip() for tag in tags if tag.strip()]
     return "Note edited successfully."
 
 @input_error
@@ -203,3 +240,42 @@ def delete_note_from_contact(args, book: AddressBook):
     
     record.notes.pop(note_number - 1)
     return "Note deleted successfully."
+
+@input_error
+def change_email(args, book: AddressBook):
+    name, new_email, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.email = Email(new_email)
+    return "Email updated successfully."
+
+
+@input_error
+def delete_email(args, book: AddressBook):
+    name, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.email = None
+    return "Email deleted successfully."
+
+
+@input_error
+def change_address(args, book: AddressBook):
+    name, new_address, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.address = Address(new_address)
+    return "Address updated successfully."
+
+
+@input_error
+def delete_address(args, book: AddressBook):
+    name, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.address = None
+    return "Address deleted successfully."
