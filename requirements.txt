@@ -1,4 +1,3 @@
-addressbook_bot @ file:///Users/monk/goItPython/homeworks4goit/bot_project/AddressBook_Bot_Neoversity
 colorama==0.4.6
 prompt_toolkit==3.0.47
 setuptools==72.2.0
