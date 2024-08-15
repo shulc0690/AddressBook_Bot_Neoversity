@@ -1,12 +1,12 @@
 from models import AddressBook
-from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays
+from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
-COMMANDS = ['hello', 'add', 'change', 'phone', 'all',
-            'add-birthday', 'show-birthday', 'birthdays', 'close', 'exit', 'q']
+COMMANDS = ['hello', 'add-contact', 'change-phone', 'show-contact', 'show-address-book',
+            'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 'close', 'exit', 'q']
 
 # Автозаповнення команд
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
@@ -27,6 +27,7 @@ def load_data(filename="addressbook.pkl"):
 
 def main():
     book = load_data()
+    
     session = PromptSession(completer=command_completer)
 
     print("It's alive! It's alive!")
@@ -44,13 +45,13 @@ def main():
             break
         elif command == "hello":
             print("How can I help you?")
-        elif command == "add":
+        elif command == "add-contact":
             print(add_contact(args, book))
-        elif command == "all":
+        elif command == "show-address-book":
             print(show_contacts(book))
-        elif command == "change":
+        elif command == "change-phone":
             print(change_contact(args, book))
-        elif command == "phone":
+        elif command == "show-contact":
             print(get_contact(args, book))
         elif command == "add-birthday":
             print(add_birthday(args, book))
@@ -58,6 +59,12 @@ def main():
             print(show_birthday(args, book))
         elif command == "birthdays":
             print(birthdays(book))
+        elif command == "add-notes":
+            print(add_note_to_contact(args, book))
+        elif command == "edit-note":
+            print(edit_note_in_contact(args, book))
+        elif command == "delete-note":
+            print(delete_note_from_contact(args, book))
         else:
             print("Invalid command.")
 

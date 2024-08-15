@@ -50,6 +50,13 @@ class Address(Field):
     def __init__(self, value):
         super().__init__(value)
 
+class Note:
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
+
+    def __str__(self):
+        return f"Title: {self.title}, Content: {self.content}"
 
 class Record:
     def __init__(self, name):
@@ -58,6 +65,7 @@ class Record:
         self.birthday = None
         self.email = None
         self.address = None
+        self.notes = []
 
     def add_phone(self, phone_number):
         self.phones.append(Phone(phone_number))
@@ -97,14 +105,29 @@ class Record:
             self.address = Address(address)
         else:
             raise ValueError("Address already exists.")
+    
+    def add_note(self, title, content):
+        self.notes.append(Note(title, content))
 
+    def show_notes(self):
+        if not self.notes:
+            return "No notes available."
+        return "\n".join(str(note) for note in self.notes)
+    
     def __str__(self):
         phones_str = '; '.join(p.value for p in self.phones)
         email_str = self.email.value if self.email else "No email"
         address_str = self.address.value if self.address else "No address"
-        birthday_str = self.birthday.value.strftime(
-            '%d.%m.%Y') if self.birthday else "No birthday"
-        return f"Name: {self.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}"
+        
+        if isinstance(self.birthday, Birthday):
+            birthday_str = self.birthday.value.strftime('%d.%m.%Y')
+        elif isinstance(self.birthday, str):
+            birthday_str = self.birthday
+        else:
+            birthday_str = "No birthday"
+            
+        notes_str = self.show_notes()
+        return f"Name: {self.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}, Notes: {notes_str}"
 
 
 class AddressBook(UserDict):
@@ -134,7 +157,7 @@ class AddressBook(UserDict):
                     upcoming_birthdays.append(
                         {'name': record.name.value, 'congratulation_date': birthday_this_year.strftime("%d.%m.%Y")})
         return upcoming_birthdays
-
+    
     def __str__(self):
         contacts = []
         for record in self.data.values():
@@ -147,10 +170,14 @@ class AddressBook(UserDict):
             if isinstance(record.birthday, Birthday):
                 birthday_str = record.birthday.value.strftime('%d.%m.%Y')
             elif isinstance(record.birthday, str):
-                birthday_str = record.birthday  # Якщо це рядок, вважаємо його правильним форматом
+                birthday_str = record.birthday  # Если это строка, считаем её корректным форматом
             else:
                 birthday_str = "No birthday"
+            
+            notes_str = "\n  ".join(f"{i+1}. {note.title}: {note.content}" for i, note in enumerate(record.notes))
+            if not notes_str:
+                notes_str = "No notes"
 
             contacts.append(
-                f"Name: {record.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}")
-        return "\n".join(contacts)
+                f"Name: {record.name.value}\n  Phone: {phones_str}\n  Email: {email_str}\n  Address: {address_str}\n  Birthday: {birthday_str}\n  Notes:\n  {notes_str}")
+        return "\n\n".join(contacts)
