@@ -155,6 +155,14 @@ class Record:
         notes_str = self.show_notes()
         return f"Name: {self.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}, Notes: {notes_str}"
 
+    # def __str__(self):
+    #     phones_str = '; '.join(p.value for p in self.phones)
+    #     email_str = self.email.value if self.email else "No email"
+    #     address_str = self.address.value if self.address else "No address"
+    #     birthday_str = self.birthday.value.strftime(
+    #         '%d.%m.%Y') if self.birthday else "No birthday"
+    #     return f"Name: {self.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}"
+
 
 class AddressBook(UserDict):
     def add_record(self, record):
@@ -207,3 +215,22 @@ class AddressBook(UserDict):
             contacts.append(
                 f"Name: {record.name.value}\n  Phone: {phones_str}\n  Email: {email_str}\n  Address: {address_str}\n  Birthday: {birthday_str}\n  Notes:\n  {notes_str}")
         return "\n\n".join(contacts)
+    # def __str__(self):
+    #     contacts = []
+    #     for record in self.data.values():
+    #         phones_str = '; '.join(p.value for p in record.phones)
+    #         email_str = record.email.value if hasattr(
+    #             record, 'email') and record.email else "No email"
+    #         address_str = record.address.value if hasattr(
+    #             record, 'address') and record.address else "No address"
+
+    #         if isinstance(record.birthday, Birthday):
+    #             birthday_str = record.birthday.value.strftime('%d.%m.%Y')
+    #         elif isinstance(record.birthday, str):
+    #             birthday_str = record.birthday  # Якщо це рядок, вважаємо його правильним форматом
+    #         else:
+    #             birthday_str = "No birthday"
+
+    #         contacts.append(
+    #             f"Name: {record.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}")
+    #     return "\n".join(contacts)
