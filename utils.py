@@ -1,4 +1,4 @@
-from models import AddressBook, Birthday, Record
+from models import AddressBook, Birthday, Record, Email, Address
 
 
 def input_error(func):
@@ -238,3 +238,42 @@ def delete_note_from_contact(args, book: AddressBook):
     
     record.notes.pop(note_number - 1)
     return "Note deleted successfully."
+
+@input_error
+def change_email(args, book: AddressBook):
+    name, new_email, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.email = Email(new_email)
+    return "Email updated successfully."
+
+
+@input_error
+def delete_email(args, book: AddressBook):
+    name, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.email = None
+    return "Email deleted successfully."
+
+
+@input_error
+def change_address(args, book: AddressBook):
+    name, new_address, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.address = Address(new_address)
+    return "Address updated successfully."
+
+
+@input_error
+def delete_address(args, book: AddressBook):
+    name, *_ = args
+    record = book.find(name)
+    if record is None:
+        return "Contact does not exist."
+    record.address = None
+    return "Address deleted successfully."
