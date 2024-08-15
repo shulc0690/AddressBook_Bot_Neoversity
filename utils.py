@@ -147,9 +147,43 @@ def add_note_to_contact(args, book: AddressBook):
 
     title = input("Enter note title: ").strip()
     content = input("Enter note content: ").strip()
-
+    tags = input("Enter tags (separated by commas):").strip().split(",")
     record.add_note(title, content)
+    record.notes[-1].add_tags([tag.strip() for tag in tags if tag.strip()])
     return "Note added successfully."
+
+def find_notes_by_tag(args, book: AddressBook):
+    if len(args) < 2:
+        return "Error: Please provide a contact name and a tag."
+    
+    name = args[0]
+    tag = args[1]
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    matching_notes = record.find_notes_by_tag(tag)
+    
+    if isinstance(matching_notes, str):  # якщо це повідомлення про помилку
+        return matching_notes
+    
+    return "\n".join(str(note) for note in matching_notes)
+
+@input_error
+def sort_notes_by_tags(args, book: AddressBook):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    
+    name = args[0]
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    sorted_notes = record.sort_notes_by_tags()
+    
+    return "\n".join(str(note) for note in sorted_notes)
 
 @input_error
 def edit_note_in_contact(args, book: AddressBook):
@@ -166,7 +200,7 @@ def edit_note_in_contact(args, book: AddressBook):
         return "This contact has no notes to edit."
     
     for i, note in enumerate(record.notes, start=1):
-        print(f"{i}. {note.title}: {note.content}")
+        print(f"{i}. {note.title}: {note.content} (Tags: {", ".join(note.tags)})")
     
     note_number = int(input("Enter the number of the note you want to edit: ").strip())
     if note_number < 1 or note_number > len(record.notes):
@@ -174,12 +208,13 @@ def edit_note_in_contact(args, book: AddressBook):
     
     title = input("Enter new note title (or press Enter to keep the current title): ").strip()
     content = input("Enter new note content (or press Enter to keep the current content): ").strip()
-    
+    tags = input("Enter new tags (separated by commas, or press Enter to keep current tags): ").strip().split(',')
     if title:
         record.notes[note_number - 1].title = title
     if content:
         record.notes[note_number - 1].content = content
-    
+    if tags:
+        record.notes[note_number - 1].tags = [tag.strip() for tag in tags if tag.strip()]
     return "Note edited successfully."
 
 @input_error
