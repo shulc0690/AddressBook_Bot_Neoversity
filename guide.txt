@@ -1,5 +1,5 @@
 *** Додавання нотаток: ***
-Використовуйте команду add-notes для додавання нової нотатки до існуючого контакту.
+Команда: add-notes
 Синтаксис: add-notes <ім'я контакту>
 Приклад:
 add-notes John
@@ -7,7 +7,7 @@ Enter note title: Meeting
 Enter note content: Discuss project details
 
 *** Редагування нотаток: ***
-Використовуйте команду edit-note для редагування існуючої нотатки в контакті.
+Команда: edit-note
 Синтаксис: edit-note <ім'я контакту>
 Після введення команди вам буде показаний список нотаток цього контакту з нумерацією.
 Виберіть номер нотатки, яку ви хочете редагувати.
@@ -20,7 +20,7 @@ Enter new note title (or press Enter to keep the current title): Updated Meeting
 Enter new note content (or press Enter to keep the current content): Updated discussion points.
 
 *** Видалення нотаток: ***
-Використовуйте команду delete-note для видалення існуючої нотатки з контакту.
+Команда: delete-note
 Синтаксис: delete-note <ім'я контакту>
 Після введення команди вам буде показаний список нотаток цього контакту з нумерацією.
 Виберіть номер нотатки, яку ви хочете видалити.
@@ -28,3 +28,30 @@ Enter new note content (or press Enter to keep the current content): Updated dis
 delete-note John
 1. Updated Meeting: Updated discussion points.
 Enter the number of the note you want to delete: 1
+
+*** Змінити email: ***
+Команда: change-email
+Синтаксис: change-email <ім'я контакту> <новий email>
+Приклад: 
+change-email John john@example.com
+
+*** Видалити email: ***
+Команда: delete-email
+Синтаксис: delete-email <ім'я контакту>
+Приклад:
+delete-email John
+
+*** Змінити адресу: ***
+Команда: change-address
+Синтаксис: change-address <ім'я контакту> <нова адреса>
+Приклад:
+change-address John 123 Main St, Springfield
+
+*** Видалити адресу: ***
+Команда: delete-address
+Синтаксис: delete-address <ім'я контакту>
+Приклад:
+delete-address John
+
+
+
