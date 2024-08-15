@@ -1,12 +1,13 @@
 from models import AddressBook
-from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact
+from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact, find_notes_by_tag, sort_notes_by_tags
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
 COMMANDS = ['hello', 'add-contact', 'change-phone', 'show-contact', 'show-address-book',
-            'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 'close', 'exit', 'q']
+            'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays',
+            'find-notes-by-tag', 'sort-notes-by-tags', 'close', 'exit', 'q']
 
 # Автозаповнення команд
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
@@ -65,6 +66,10 @@ def main():
             print(edit_note_in_contact(args, book))
         elif command == "delete-note":
             print(delete_note_from_contact(args, book))
+        elif command == "find-notes-by-tag":
+            print(find_notes_by_tag(args, book))
+        elif command == "sort-notes-by-tags":
+            print(sort_notes_by_tags(args, book))    
         else:
             print("Invalid command.")
 

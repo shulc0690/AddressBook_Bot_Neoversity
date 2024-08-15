@@ -51,12 +51,17 @@ class Address(Field):
         super().__init__(value)
 
 class Note:
-    def __init__(self, title, content):
+    def __init__(self, title, content, tags=None):
         self.title = title
         self.content = content
-
+        self.tags = tags or []
+    
     def __str__(self):
-        return f"Title: {self.title}, Content: {self.content}"
+        tags_str = ", ".join(self.tags)
+        return f"Title: {self.title}, Content: {self.content}, Tags: {tags_str}"
+
+    def add_tags(self, tags):
+        self.tags.extend(tags)
 
 class Record:
     def __init__(self, name):
@@ -112,7 +117,17 @@ class Record:
     def show_notes(self):
         if not self.notes:
             return "No notes available."
-        return "\n".join(str(note) for note in self.notes)
+        return "\n".join(f"Title: {note.title}, Content: {note.content}, Tags: {', '.join(note.tags)}" for note in self.notes)
+    
+    def find_notes_by_tag(self, tag):
+        matching_notes = [note for note in self.notes if tag in note.tags]
+        if not matching_notes:
+            return f"No notes found with the tag: {tag}"
+        return matching_notes
+    
+    def sort_notes_by_tags(self):
+        sorted_notes = sorted(self.notes, key=lambda note: ','.join(sorted(note.tags)))
+        return sorted_notes
     
     def __str__(self):
         phones_str = '; '.join(p.value for p in self.phones)
