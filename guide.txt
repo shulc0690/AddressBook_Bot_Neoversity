@@ -1,0 +1,30 @@
+*** Додавання нотаток: ***
+Використовуйте команду add-notes для додавання нової нотатки до існуючого контакту.
+Синтаксис: add-notes <ім'я контакту>
+Приклад:
+add-notes John
+Enter note title: Meeting
+Enter note content: Discuss project details
+
+*** Редагування нотаток: ***
+Використовуйте команду edit-note для редагування існуючої нотатки в контакті.
+Синтаксис: edit-note <ім'я контакту>
+Після введення команди вам буде показаний список нотаток цього контакту з нумерацією.
+Виберіть номер нотатки, яку ви хочете редагувати.
+Введіть новий заголовок і зміст нотатки
+Приклад:
+edit-note John
+1. Meeting: Discuss project details.
+Enter the number of the note you want to edit: 1
+Enter new note title (or press Enter to keep the current title): Updated Meeting
+Enter new note content (or press Enter to keep the current content): Updated discussion points.
+
+*** Видалення нотаток: ***
+Використовуйте команду delete-note для видалення існуючої нотатки з контакту.
+Синтаксис: delete-note <ім'я контакту>
+Після введення команди вам буде показаний список нотаток цього контакту з нумерацією.
+Виберіть номер нотатки, яку ви хочете видалити.
+Приклад:
+delete-note John
+1. Updated Meeting: Updated discussion points.
+Enter the number of the note you want to delete: 1

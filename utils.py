@@ -131,3 +131,75 @@ def show_birthday(args, book):
 @input_error
 def birthdays(book):
     return book.get_upcoming_birthdays()
+
+@input_error
+def add_note_to_contact(args, book: AddressBook):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    
+    name = args[0]
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+
+    title = input("Enter note title: ").strip()
+    content = input("Enter note content: ").strip()
+
+    record.add_note(title, content)
+    return "Note added successfully."
+
+@input_error
+def edit_note_in_contact(args, book: AddressBook):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    
+    name = args[0]
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    if not record.notes:
+        return "This contact has no notes to edit."
+    
+    for i, note in enumerate(record.notes, start=1):
+        print(f"{i}. {note.title}: {note.content}")
+    
+    note_number = int(input("Enter the number of the note you want to edit: ").strip())
+    if note_number < 1 or note_number > len(record.notes):
+        return "Invalid note number."
+    
+    title = input("Enter new note title (or press Enter to keep the current title): ").strip()
+    content = input("Enter new note content (or press Enter to keep the current content): ").strip()
+    
+    if title:
+        record.notes[note_number - 1].title = title
+    if content:
+        record.notes[note_number - 1].content = content
+    
+    return "Note edited successfully."
+
+@input_error
+def delete_note_from_contact(args, book: AddressBook):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    
+    name = args[0]
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    if not record.notes:
+        return "This contact has no notes to delete."
+    
+    for i, note in enumerate(record.notes, start=1):
+        print(f"{i}. {note.title}: {note.content}")
+    
+    note_number = int(input("Enter the number of the note you want to delete: ").strip())
+    if note_number < 1 or note_number > len(record.notes):
+        return "Invalid note number."
+    
+    record.notes.pop(note_number - 1)
+    return "Note deleted successfully."

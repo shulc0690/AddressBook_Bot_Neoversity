@@ -1,12 +1,12 @@
 from models import AddressBook
-from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays
+from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
 COMMANDS = ['hello', 'add', 'change', 'phone', 'all',
-            'add-birthday', 'show-birthday', 'birthdays', 'close', 'exit', 'q']
+            'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 'close', 'exit', 'q']
 
 # Автозаповнення команд
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
@@ -27,6 +27,11 @@ def load_data(filename="addressbook.pkl"):
 
 def main():
     book = load_data()
+    
+    # for record in book.values():
+    #     if not hasattr(record, 'notes'):
+    #         record.notes = []
+    
     session = PromptSession(completer=command_completer)
 
     print("It's alive! It's alive!")
@@ -58,6 +63,12 @@ def main():
             print(show_birthday(args, book))
         elif command == "birthdays":
             print(birthdays(book))
+        elif command == "add-notes":
+            print(add_note_to_contact(args, book))
+        elif command == "edit-note":
+            print(edit_note_in_contact(args, book))
+        elif command == "delete-note":
+            print(delete_note_from_contact(args, book))
         else:
             print("Invalid command.")
 
