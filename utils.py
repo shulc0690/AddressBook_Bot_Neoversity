@@ -77,7 +77,7 @@ def add_contact(args, book: AddressBook):
 
 
 @input_error
-def change_contact(args, book: AddressBook):
+def edit_contact(args, book: AddressBook):
     """Function changes existing contact."""
     name, old_phone, new_phone, *_ = args
     record = book.find(name)
@@ -93,6 +93,8 @@ def change_contact(args, book: AddressBook):
 @input_error
 def get_contact(args, book: AddressBook):
     """Function get phone for existing contact."""
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
     name, *_ = args
     record = book.find(name)
     if record is None:
@@ -100,7 +102,7 @@ def get_contact(args, book: AddressBook):
     return record
 
 
-def show_contacts(book: AddressBook):
+def show_address_book(book: AddressBook):
     """Function returns all contacts."""
     if len(book) == 0:
         return "Contact list is empty."

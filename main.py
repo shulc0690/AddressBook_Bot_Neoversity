@@ -1,11 +1,11 @@
 from models import AddressBook
-from utils import parse_input, add_contact, show_contacts, change_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact, change_email, delete_email, change_address, delete_address
+from utils import parse_input, add_contact, show_address_book, edit_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact, change_email, delete_email, change_address, delete_address
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
-COMMANDS = ['hello', 'add-contact', 'change-phone', 'show-contact', 'show-address-book',
+COMMANDS = ['hello', 'add-contact', 'edit-phone', 'show-contact', 'show-address-book',
             'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
             'change-email', 'delete-email', 'change-address', 'delete-address', 'close', 'exit', 'q']
 
@@ -16,7 +16,6 @@ command_completer = WordCompleter(COMMANDS, ignore_case=True)
 def save_data(book, filename="addressbook.pkl"):
     with open(filename, 'wb') as file:
         pickle.dump(book, file)
-
 
 def load_data(filename="addressbook.pkl"):
     try:
@@ -49,9 +48,9 @@ def main():
         elif command == "add-contact":
             print(add_contact(args, book))
         elif command == "show-address-book":
-            print(show_contacts(book))
-        elif command == "change-phone":
-            print(change_contact(args, book))
+            print(show_address_book(book))
+        elif command == "edit-phone":
+            print(edit_contact(args, book))
         elif command == "show-contact":
             print(get_contact(args, book))
         elif command == "add-birthday":

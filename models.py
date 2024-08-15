@@ -98,7 +98,7 @@ class Record:
 
     def add_birthday(self, birthday):
         if self.birthday is None:
-            self.birthday = birthday
+            self.birthday = Birthday(birthday)
         else:
             raise ValueError("Birthday already exists")
 
