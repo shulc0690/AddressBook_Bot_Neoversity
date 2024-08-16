@@ -8,7 +8,7 @@ from prompt_toolkit.completion import WordCompleter
 # Список доступних команд
 COMMANDS = ['hello', 'add-contact', 'edit-phone', 'delete-phone', 'edit-contact', 'show-contact', 'show-address-book', 'search',
             'add-birthday', 'show-birthday', 'edit-birthday', 'delete-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
-            'change-email', 'delete-email', 'change-address', 'delete-address','find-notes-by-tag', 'sort-notes-by-tags', 'delete-contact', 'close', 'exit', 'q']
+            'edit-email', 'delete-email', 'edit-address', 'delete-address','search-notes-by-tag', 'sort-notes-by-tags', 'delete-contact', 'close', 'exit', 'q']
 
 
 # Автозаповнення команд
@@ -77,15 +77,15 @@ def main():
             print(edit_note_in_contact(args, book))
         elif command == "delete-note":
             print(delete_note_from_contact(args, book))
-        elif command == "find-notes-by-tag":
+        elif command == "search-notes-by-tag":
             print(find_notes_by_tag(args, book))
         elif command == "sort-notes-by-tags":
             print(sort_notes_by_tags(args, book))    
-        elif command == "change-email":
+        elif command == "edit-email":
             print(change_email(args, book))
         elif command == "delete-email":
             print(delete_email(args, book))
-        elif command == "change-address":
+        elif command == "edit-address":
             print(change_address(args, book))
         elif command == "delete-address":
             print(delete_address(args, book))
