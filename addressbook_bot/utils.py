@@ -1,4 +1,4 @@
-from addressbook_bot.models import AddressBook, Birthday, Record, Email, Address
+from models import AddressBook, Birthday, Record, Email, Address
 import re
 from datetime import datetime, timedelta
 

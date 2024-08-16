@@ -1,5 +1,6 @@
-from addressbook_bot.models import AddressBook
-from addressbook_bot.utils import *
+from models import AddressBook
+from utils import *
+
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
