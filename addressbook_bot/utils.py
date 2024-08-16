@@ -176,6 +176,23 @@ def show_birthday(args, book):
         return "Contact does not exists."
     return record.birthday.value.strftime('%d.%m.%Y')
 
+@input_error
+def edit_birthday(args, book):
+    if len(args) < 2:
+        return "Error: Please provide a contact name and a new birthday."
+    name, new_birthday_str, *_ = args
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    try:
+        new_birthday = Birthday(new_birthday_str)
+        record.birthday = new_birthday
+        return f"Birthday for {name} has been updated to {new_birthday_str}."
+    except ValueError as e:
+        return f"Error: {e}"
+
 
 @input_error
 def birthdays(book: AddressBook, days: int):
