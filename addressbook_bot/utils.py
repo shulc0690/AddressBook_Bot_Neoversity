@@ -568,3 +568,15 @@ def delete_phone(args, book):
     record.remove_phone(phone_number)
     return f"Phone number {phone_number} for {name} has been deleted."
 
+
+@input_error
+def delete_contact(args, book: AddressBook):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    
+    name = args[0]
+    if book.find(name) is None:
+        return "Contact does not exist."
+    
+    book.delete(name)
+    return f"Contact {name} deleted successfully."
