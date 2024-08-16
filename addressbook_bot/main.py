@@ -7,7 +7,7 @@ from prompt_toolkit.completion import WordCompleter
 # Список доступних команд
 COMMANDS = ['hello', 'add-contact', 'edit-phone', 'show-contact', 'show-address-book', 'search',
             'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
-            'change-email', 'delete-email', 'change-address', 'delete-address','find-notes-by-tag', 'sort-notes-by-tags', 'close', 'exit', 'q']
+            'change-email', 'delete-email', 'change-address', 'delete-address','find-notes-by-tag', 'sort-notes-by-tags', 'delete-address', 'close', 'exit', 'q']
 
 
 # Автозаповнення команд
@@ -80,6 +80,8 @@ def main():
         elif command == "change-address":
             print(change_address(args, book))
         elif command == "delete-address":
+            print(delete_address(args, book))
+        elif command == "delete-contact":
             print(delete_address(args, book))
         else:
             print("Invalid command.")
