@@ -147,15 +147,25 @@ def show_address_book(book: AddressBook):
 
 @input_error
 def add_birthday(args, book):
-    name, birthday, *_ = args
+    if len(args) < 2:
+        return "Error: Please provide a contact name and a birthday."
+    name, birthday_str, *_ = args
     record = book.find(name)
-    message = "Birthday added."
     if record is None:
-        return "Contact does not exists."
-    if birthday:
-        record.add_birthday(Birthday(birthday))
-    return message
-
+        # Якщо контакт не існує, створюємо новий запис
+        record = Record(name=name)
+        book.add_record(record)
+        message = f"Contact '{name}' created."
+    else:
+        message = "Contact found."
+    
+    try:
+        # Створюємо об'єкт Birthday, передаючи в нього строку дати
+        birthday = Birthday(birthday_str)
+        record.add_birthday(birthday.value.strftime('%d.%m.%Y'))
+        return f"{message} Birthday added."
+    except ValueError as e:
+        return f"Error: {e}"
 
 @input_error
 def show_birthday(args, book):
@@ -168,7 +178,13 @@ def show_birthday(args, book):
 
 @input_error
 def birthdays(book):
-    return book.get_upcoming_birthdays()
+    upcoming_birthdays = book.get_upcoming_birthdays()
+    if not upcoming_birthdays:
+        return "No upcoming birthdays."
+    result = "Upcoming birthdays:\n"
+    for entry in upcoming_birthdays:
+        result += f"- {entry['name']} on {entry['congratulation_date']}\n"
+    return result.strip()
 
 @input_error
 def add_note_to_contact(args, book: AddressBook):

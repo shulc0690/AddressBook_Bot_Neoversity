@@ -92,8 +92,10 @@ class Record:
         return result[0] if len(result) > 0 else None
 
     def add_birthday(self, birthday):
+        if isinstance(birthday, str):
+            birthday = Birthday(birthday)
         if self.birthday is None:
-            self.birthday = Birthday(birthday)
+            self.birthday = birthday
         else:
             raise ValueError("Birthday already exists")
 
