@@ -1,5 +1,5 @@
-from models import AddressBook
-from utils import parse_input, add_contact, show_address_book, edit_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact, change_email, delete_email, change_address, delete_address, find_notes_by_tag, sort_notes_by_tags, search_contact
+from addressbook_bot.models import AddressBook
+from addressbook_bot.utils import *
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter

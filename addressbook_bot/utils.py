@@ -1,4 +1,4 @@
-from models import AddressBook, Birthday, Record, Email, Address
+from addressbook_bot.models import AddressBook, Birthday, Record
 
 
 def input_error(func):
