@@ -290,3 +290,14 @@ def delete_address(args, book: AddressBook):
         return "Contact does not exist."
     record.address = None
     return "Address deleted successfully."
+
+def delete_contact(args, book: AddressBook):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    
+    name = args[0]
+    if book.find(name) is None:
+        return "Contact does not exist."
+    
+    book.delete(name)
+    return f"Contact {name} deleted successfully."
