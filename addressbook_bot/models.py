@@ -1,6 +1,7 @@
 from collections import UserDict
 from datetime import datetime
 import re
+from typing import List
 
 
 class Field:
@@ -176,6 +177,18 @@ class AddressBook(UserDict):
                     upcoming_birthdays.append(
                         {'name': record.name.value, 'congratulation_date': birthday_this_year.strftime("%d.%m.%Y")})
         return upcoming_birthdays
+    
+    def search(self, keyword):
+        results = []
+        for record in self.data.values():
+            if (keyword.lower() in record.name.value.lower() or
+                any(keyword.lower() in phone.value.lower() for phone in record.phones) or
+                (record.birthday and keyword.lower() in record.birthday.value.strftime("%d.%m.%Y").lower()) or
+                (record.email and keyword.lower() in record.email.value.lower()) or
+                (record.address and keyword.lower() in record.address.value.lower()) or
+                any(keyword.lower() in note.title.lower() or keyword.lower() in note.content.lower() or keyword.lower() in tag.lower() for note in record.notes for tag in note.tags)):
+                results.append(record.__str__())
+        return results
     
     def __str__(self):
         contacts = []

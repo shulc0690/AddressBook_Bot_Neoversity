@@ -138,6 +138,16 @@ def get_contact(args, book: AddressBook):
         return "Contact does not exists."
     return record
 
+@input_error
+def search_contact(args, book: AddressBook):
+    """Function search contact by all fields."""
+    if len(args) < 1:
+        return "Error: Please provide a keyword."
+    keyword, *_ = args
+    records = book.search(keyword)
+    if records is None:
+        return "There is no contact that matches the search data."
+    return records
 
 def show_address_book(book: AddressBook):
     """Function returns all contacts."""
@@ -303,7 +313,8 @@ def edit_note_in_contact(args, book: AddressBook):
         return "This contact has no notes to edit."
     
     for i, note in enumerate(record.notes, start=1):
-        print(f"{i}. {note.title}: {note.content} (Tags: {", ".join(note.tags)})")
+        tags = ", ".join(note.tags)
+        print(f'{i}. {note.title}: {note.content} (Tags: {tags})')
     
     note_number = int(input("Enter the number of the note you want to edit: ").strip())
     if note_number < 1 or note_number > len(record.notes):
