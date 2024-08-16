@@ -187,9 +187,13 @@ def birthdays(book: AddressBook, days: int):
         if record.birthday:
             birthday = record.birthday.value.date()
             birthday_this_year = birthday.replace(year=today.year)
-            if birthday_this_year >= today and birthday_this_year <= target_date:
+
+            if birthday_this_year < today:
+                birthday_this_year = birthday
+            
+            if today <= birthday_this_year <= target_date:
                 upcoming_birthdays.append(
-                    {'name': record.name.value, 'birthday': birthday_this_year.strftime("%d.%m.%Y")}
+                    {'name': record.name.value, 'birthday': birthday.strftime("%d.%m.%Y")}
                 )
 
     if not upcoming_birthdays:
