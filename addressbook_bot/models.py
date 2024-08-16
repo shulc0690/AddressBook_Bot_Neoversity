@@ -46,17 +46,6 @@ class Email(Field):
         if not re.match(email_regex, self.value):
             raise ValueError("Invalid email format. Please provide a valid email address.")
 
-# class Email(Field):
-#     def __init__(self, value):
-#         super().__init__(value)
-#         self.validate_email()
-
-#     def validate_email(self):
-#         if "@" not in self.value or "." not in self.value:
-#             raise ValueError(
-#                 "Invalid email format. Please provide a valid email address.")
-
-
 class Address(Field):
     def __init__(self, value):
         super().__init__(value)
@@ -77,6 +66,7 @@ class Note:
 class Record:
     def __init__(self, name):
         self.name = Name(name)
+        self.last_name = None
         self.phones = []
         self.birthday = None
         self.email = None
@@ -141,6 +131,7 @@ class Record:
         return sorted_notes
     
     def __str__(self):
+        last_name_str = self.last_name if self.last_name else "No last name"
         phones_str = '; '.join(p.value for p in self.phones)
         email_str = self.email.value if self.email else "No email"
         address_str = self.address.value if self.address else "No address"
@@ -153,7 +144,7 @@ class Record:
             birthday_str = "No birthday"
             
         notes_str = self.show_notes()
-        return f"Name: {self.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}, Notes: {notes_str}"
+        return f"Name: {self.name.value}, Last Name: {last_name_str}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}, Notes: {notes_str}"
 
 
 class AddressBook(UserDict):
@@ -187,6 +178,9 @@ class AddressBook(UserDict):
     def __str__(self):
         contacts = []
         for record in self.data.values():
+            if not hasattr(record, 'last_name'):
+                record.last_name = None
+            last_name_str = record.last_name if record.last_name else "No last name"
             phones_str = '; '.join(p.value for p in record.phones) if record.phones else "No phone"
             email_str = record.email.value if hasattr(
                 record, 'email') and record.email else "No email"
@@ -196,7 +190,7 @@ class AddressBook(UserDict):
             if isinstance(record.birthday, Birthday):
                 birthday_str = record.birthday.value.strftime('%d.%m.%Y')
             elif isinstance(record.birthday, str):
-                birthday_str = record.birthday  # Если это строка, считаем её корректным форматом
+                birthday_str = record.birthday 
             else:
                 birthday_str = "No birthday"
             
@@ -205,5 +199,5 @@ class AddressBook(UserDict):
                 notes_str = "No notes"
 
             contacts.append(
-                f"Name: {record.name.value}\n  Phone: {phones_str}\n  Email: {email_str}\n  Address: {address_str}\n  Birthday: {birthday_str}\n  Notes:\n  {notes_str}")
+                f"Name: {record.name.value}\n  Last Name: {last_name_str}\n  Phone: {phones_str}\n  Email: {email_str}\n  Address: {address_str}\n  Birthday: {birthday_str}\n  Notes:\n  {notes_str}")
         return "\n\n".join(contacts)
