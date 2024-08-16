@@ -381,6 +381,10 @@ def edit_contact_full(args, book: AddressBook):
                 phone_choice = input("Enter the number: ").strip()
 
                 if phone_choice == '1':
+                    if not record.phones:  # Перевірка на порожній список телефонів
+                        print("This contact has no phone numbers to edit.")
+                        continue
+            
                     if len(record.phones) > 1:  # Якщо більше одного номера телефону
                         print("Select the phone number you want to edit:")
                         for i, phone in enumerate(record.phones, start=1):
