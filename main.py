@@ -1,11 +1,11 @@
 from models import AddressBook
-from utils import parse_input, add_contact, show_address_book, edit_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact, change_email, delete_email, change_address, delete_address, find_notes_by_tag, sort_notes_by_tags
+from utils import parse_input, add_contact, show_address_book, edit_contact, get_contact, add_birthday, show_birthday, birthdays, add_note_to_contact, edit_note_in_contact, delete_note_from_contact, change_email, delete_email, change_address, delete_address, find_notes_by_tag, sort_notes_by_tags, search_contact
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
-COMMANDS = ['hello', 'add-contact', 'edit-phone', 'show-contact', 'show-address-book',
+COMMANDS = ['hello', 'add-contact', 'edit-phone', 'show-contact', 'show-address-book', 'search',
             'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
             'change-email', 'delete-email', 'change-address', 'delete-address','find-notes-by-tag', 'sort-notes-by-tags', 'close', 'exit', 'q']
 
@@ -54,6 +54,9 @@ def main():
             print(edit_contact(args, book))
         elif command == "show-contact":
             print(get_contact(args, book))
+        elif command == "search":
+            for contact in search_contact(args, book):
+                print(contact)
         elif command == "add-birthday":
             print(add_birthday(args, book))
         elif command == "show-birthday":
