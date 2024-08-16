@@ -291,6 +291,7 @@ def delete_address(args, book: AddressBook):
     record.address = None
     return "Address deleted successfully."
 
+@input_error
 def delete_contact(args, book: AddressBook):
     if len(args) < 1:
         return "Error: Please provide a contact name."
