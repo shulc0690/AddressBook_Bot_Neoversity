@@ -5,8 +5,8 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 
 # Список доступних команд
-COMMANDS = ['hello', 'add-contact', 'edit-phone', 'show-contact', 'show-address-book', 'search',
-            'add-birthday', 'show-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
+COMMANDS = ['hello', 'add-contact', 'edit-phone', 'delete-phone', 'edit-contact', 'show-contact', 'show-address-book', 'search',
+            'add-birthday', 'show-birthday', 'edit-birthday', 'delete-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
             'change-email', 'delete-email', 'change-address', 'delete-address','find-notes-by-tag', 'sort-notes-by-tags', 'delete-contact', 'close', 'exit', 'q']
 
 
@@ -62,7 +62,14 @@ def main():
         elif command == "show-birthday":
             print(show_birthday(args, book))
         elif command == "birthdays":
-            print(birthdays(book))
+            if args:
+                try:
+                    days = int(args[0])
+                    print(birthdays(book, days))
+                except ValueError:
+                    print("Please enter a valid number of days.")
+            else:
+                print("Please specify the number of days.")
         elif command == "add-notes":
             print(add_note_to_contact(args, book))
         elif command == "edit-note":
@@ -81,6 +88,14 @@ def main():
             print(change_address(args, book))
         elif command == "delete-address":
             print(delete_address(args, book))
+        elif command == "edit-contact":
+            print(edit_contact_full(args, book))
+        elif command == "edit-birthday":
+            print(edit_birthday(args, book))
+        elif command == "delete-birthday":
+            print(delete_birthday(args, book))
+        elif command == "delete-phone":
+            print(delete_phone(args, book))
         elif command == "delete-contact":
             print(delete_contact(args, book))
         else:
