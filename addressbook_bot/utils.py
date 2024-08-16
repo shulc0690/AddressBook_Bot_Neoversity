@@ -193,6 +193,22 @@ def edit_birthday(args, book):
     except ValueError as e:
         return f"Error: {e}"
 
+@input_error
+def delete_birthday(args, book):
+    if len(args) < 1:
+        return "Error: Please provide a contact name."
+    name, *_ = args
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    if record.birthday is None:
+        return f"{name} does not have a birthday set."
+    
+    record.birthday = None
+    return f"Birthday for {name} has been deleted."
+
 
 @input_error
 def birthdays(book: AddressBook, days: int):
@@ -524,3 +540,20 @@ def edit_contact_full(args, book: AddressBook):
             print("Invalid choice. Please select a valid option.")
             
     return "Contact editing completed."
+
+@input_error
+def delete_phone(args, book):
+    if len(args) < 2:
+        return "Error: Please provide a contact name and the phone number to delete."
+    name, phone_number, *_ = args
+    record = book.find(name)
+    
+    if record is None:
+        return "Contact does not exist."
+    
+    if not record.find_phone(phone_number):
+        return f"{name} does not have this phone number."
+    
+    record.remove_phone(phone_number)
+    return f"Phone number {phone_number} for {name} has been deleted."
+
