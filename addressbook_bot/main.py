@@ -59,7 +59,14 @@ def main():
         elif command == "show-birthday":
             print(show_birthday(args, book))
         elif command == "birthdays":
-            print(birthdays(book))
+            if args:
+                try:
+                    days = int(args[0])
+                    print(birthdays(book, days))
+                except ValueError:
+                    print("Please enter a valid number of days.")
+            else:
+                print("Please specify the number of days.")
         elif command == "add-notes":
             print(add_note_to_contact(args, book))
         elif command == "edit-note":

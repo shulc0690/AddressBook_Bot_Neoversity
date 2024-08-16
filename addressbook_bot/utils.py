@@ -1,5 +1,6 @@
 from addressbook_bot.models import AddressBook, Birthday, Record, Email, Address
 import re
+from datetime import datetime, timedelta
 
 
 def input_error(func):
@@ -177,13 +178,26 @@ def show_birthday(args, book):
 
 
 @input_error
-def birthdays(book):
-    upcoming_birthdays = book.get_upcoming_birthdays()
+def birthdays(book: AddressBook, days: int):
+    today = datetime.today().date()
+    target_date = today + timedelta(days=days)
+    upcoming_birthdays = []
+
+    for record in book.data.values():
+        if record.birthday:
+            birthday = record.birthday.value.date()
+            birthday_this_year = birthday.replace(year=today.year)
+            if birthday_this_year >= today and birthday_this_year <= target_date:
+                upcoming_birthdays.append(
+                    {'name': record.name.value, 'birthday': birthday_this_year.strftime("%d.%m.%Y")}
+                )
+
     if not upcoming_birthdays:
-        return "No upcoming birthdays."
-    result = "Upcoming birthdays:\n"
+        return f"No birthdays within the next {days} days."
+    
+    result = f"Birthdays within the next {days} days:\n"
     for entry in upcoming_birthdays:
-        result += f"- {entry['name']} on {entry['congratulation_date']}\n"
+        result += f"- {entry['name']} on {entry['birthday']}\n"
     return result.strip()
 
 @input_error
