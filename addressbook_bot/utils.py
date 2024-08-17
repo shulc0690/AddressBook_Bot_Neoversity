@@ -54,7 +54,7 @@ def add_contact(args, book: AddressBook):
     try:
         validate_name(name)
     except ValueError as e:
-        return f"Error: {e}"
+        return error_msg4return(f"Error: {e}")
 
     record = book.find(name)
     message = "Contact updated."
@@ -87,7 +87,7 @@ def add_contact(args, book: AddressBook):
             record.add_phone(phone)
             break
         except ValueError as e:
-            print(e)
+            error_msg(e)
 
     for i in range(2):
         combed_msg = info_msg4return("Enter email address (or press Enter to skip): ")
@@ -98,7 +98,7 @@ def add_contact(args, book: AddressBook):
             record.add_email(email)
             break
         except ValueError as e:
-            print(e)
+            error_msg(e)
 
     for i in range(2):
         combed_msg = info_msg4return("Enter address (or press Enter to skip): ")
@@ -117,7 +117,7 @@ def add_contact(args, book: AddressBook):
             record.add_birthday(birthday)
             break
         except ValueError as e:
-            print(e)
+            error_msg(e)
     combed_msg = info_msg4return(message)
     return combed_msg
 
@@ -148,7 +148,7 @@ def get_contact(args, book: AddressBook):
     record = book.find(name)
     if record is None:
         return info_msg4return("Contact does not exist.")
-    return record
+    return info_msg4return(str(record))
 
 @input_error
 def search_contact(args, book: AddressBook):
@@ -158,7 +158,7 @@ def search_contact(args, book: AddressBook):
         return combed_msg
     keyword, *_ = args
     records = book.search(keyword)
-    if records is None:
+    if not records:
         combed_msg = info_msg4return("There is no contact that matches the search data.")
         return combed_msg
     return records
@@ -210,7 +210,7 @@ def show_address_book(book: AddressBook):
 @input_error
 def add_birthday(args, book):
     if len(args) < 2:
-        return "Error: Please provide a contact name and a birthday."
+        return error_msg4return("Error: Please provide a contact name and a birthday.")
     name, birthday_str, *_ = args
     record = book.find(name)
     if record is None:
@@ -227,7 +227,7 @@ def add_birthday(args, book):
         record.add_birthday(birthday.value.strftime('%d.%m.%Y'))
         return f"{message} Birthday added."
     except ValueError as e:
-        return f"Error: {e}"
+        return error_msg4return(f"Error: {e}")
 
 @input_error
 def show_birthday(args, book):
@@ -235,7 +235,7 @@ def show_birthday(args, book):
     record = book.find(name)
     if record is None:
         return info_msg4return("Contact does not exist.")
-    return record.birthday.value.strftime('%d.%m.%Y')
+    return info_msg4return(record.birthday.value.strftime('%d.%m.%Y'))
 
 @input_error
 def edit_birthday(args, book):
@@ -245,14 +245,14 @@ def edit_birthday(args, book):
     record = book.find(name)
     
     if record is None:
-        return "Contact does not exist."
+        return info_msg4return("Contact does not exist.")
     
     try:
         new_birthday = Birthday(new_birthday_str)
         record.birthday = new_birthday
-        return f"Birthday for {name} has been updated to {new_birthday_str}."
+        return info_msg4return(f"Birthday for {name} has been updated to {new_birthday_str}.")
     except ValueError as e:
-        return f"Error: {e}"
+        return error_msg4return(f"Error: {e}")
 
 @input_error
 def delete_birthday(args, book):
@@ -262,13 +262,13 @@ def delete_birthday(args, book):
     record = book.find(name)
     
     if record is None:
-        return "Contact does not exist."
+        return info_msg4return("Contact does not exist.")
     
     if record.birthday is None:
-        return f"{name} does not have a birthday set."
+        return info_msg4return(f"{name} does not have a birthday set.")
     
     record.birthday = None
-    return f"Birthday for {name} has been deleted."
+    return info_msg4return(f"Birthday for {name} has been deleted.")
 
 
 @input_error
@@ -296,7 +296,8 @@ def birthdays(book: AddressBook, days: int):
     result = f"Birthdays within the next {days} days:\n"
     for entry in upcoming_birthdays:
         result += f"- {entry['name']} on {entry['birthday']}\n"
-    return result.strip()
+        combed_msg = info_msg4return(result).strip()
+    return combed_msg
 
 @input_error
 def add_note_to_contact(args, book: AddressBook):
@@ -457,7 +458,7 @@ def delete_address(args, book: AddressBook):
     if record is None:
         return info_msg4return("Contact does not exist.")
     record.address = None
-    return "Address deleted successfully."
+    return info_msg4return("Address deleted successfully.")
 
 @input_error
 def edit_contact_full(args, book: AddressBook):
@@ -468,7 +469,7 @@ def edit_contact_full(args, book: AddressBook):
     record = book.find(name)
     
     if record is None:
-        return "Contact does not exist."
+        return info_msg4return("Contact does not exist.")
     
     while True:
         main_msg("Select what you want to edit:")
@@ -560,7 +561,7 @@ def edit_contact_full(args, book: AddressBook):
                                 info_msg("Phone number updated successfully.")
                                 break
                             except ValueError as e:
-                                print(f"Error: {e}. You have {1 - attempt} attempts left.")
+                                error_msg(f"Error: {e}. You have {1 - attempt} attempts left.")
                         else:
                             info_msg("Phone number not updated.")
                 

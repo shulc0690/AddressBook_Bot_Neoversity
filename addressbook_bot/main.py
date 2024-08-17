@@ -5,7 +5,6 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style as prompt_style
 from special_efects import *
-import pathlib
 
 
 # Список доступних команд
@@ -51,8 +50,9 @@ def main():
     heder()
     session = PromptSession(completer=command_completer)
 
-    info_msg("Hello my friend! Welcome to Budanov note bot!")
-    info_msg("Enter command \"commands\" to see all commands.")
+    info_msg("________________________________________________________________\n")
+    info_msg("Hello my friend! Welcome to Budanov note bot!\n")
+    info_msg("Enter command \"commands\" to see all commands.\n")
 
     while True:
         user_input = session.prompt(main_msg("Enter a command: "), style=prompt_style)
