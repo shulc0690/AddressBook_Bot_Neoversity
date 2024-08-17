@@ -1,19 +1,28 @@
 from models import AddressBook
 from utils import *
-
 import pickle
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.styles import Style as prompt_style
+from special_efects import *
+import pathlib
+
 
 # Список доступних команд
-COMMANDS = ['hello', 'add-contact', 'edit-phone', 'delete-phone', 'edit-contact', 'show-contact', 'show-address-book', 'search',
+COMMANDS = ['commands', 'hello', 'add-contact', 'edit-phone', 'delete-phone', 'edit-contact', 'show-contact', 'show-address-book', 'search',
             'add-birthday', 'show-birthday', 'edit-birthday', 'delete-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
             'edit-email', 'delete-email', 'edit-address', 'delete-address','search-notes-by-tag', 'sort-notes-by-tags', 'delete-contact', 'close', 'exit', 'q']
 
-
+prompt_style = prompt_style.from_dict({
+    'prompt': 'ansicyan bold',  # prompt style
+    'completion-menu.completion': 'bg:ansiblack fg:ansigreen',  
+    'completion-menu.completion.current': 'bg:ansiyellow fg:ansiblack',
+    'completion-menu.completion.current': 'bg:ansiblack fg:ansigreen',
+})
 # Автозаповнення команд
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
+gur_logo =  "data/gur_logo.txt"
 
 def save_data(book, filename="addressbook.pkl"):
     with open(filename, 'wb') as file:
@@ -26,27 +35,41 @@ def load_data(filename="addressbook.pkl"):
     except FileNotFoundError:
         return AddressBook()
 
+def heder():
+    with open(gur_logo, 'r', encoding='ascii') as fh:
+        try:
+            heder = fh.read()
+            logo_style(heder)
+        except FileNotFoundError:
+            error_msg(f"File '{gur_logo}' not found.")
+        except IOError:
+            error_msg(f"Something went wrong while reading '{gur_logo}'.") 
+
 
 def main():
     book = load_data()
-    
+    heder()
     session = PromptSession(completer=command_completer)
 
-    print("It's alive! It's alive!")
+    info_msg("Hello my friend! Welcome to Budanov note bot!")
+    info_msg("Enter command \"commands\" to see all commands.")
 
     while True:
-        user_input = session.prompt("Enter a command: ")
+        user_input = session.prompt(main_msg("Enter a command: "), style=prompt_style)
         if not user_input.strip():
-            print("No command entered. Please enter a command.")
+            info_msg("No command entered. Please enter a command.")
             continue
 
         command, *args = parse_input(user_input)
 
         if command in ["close", "exit", "q"]:
-            print("Good bye!")
+            info_msg("Goodbye, sir! Glory to Ukraine!")
+            angry_style("Death to enemies!")
             break
+        elif command == "commands":
+            info_msg(str(COMMANDS))
         elif command == "hello":
-            print("How can I help you?")
+            info_msg("How can I help you, sir? Any new target?")
         elif command == "add-contact":
             print(add_contact(args, book))
         elif command == "show-address-book":
@@ -57,7 +80,7 @@ def main():
             print(get_contact(args, book))
         elif command == "search":
             for contact in search_contact(args, book):
-                print(contact)
+                info_msg(contact)
         elif command == "add-birthday":
             print(add_birthday(args, book))
         elif command == "show-birthday":
@@ -68,9 +91,9 @@ def main():
                     days = int(args[0])
                     print(birthdays(book, days))
                 except ValueError:
-                    print("Please enter a valid number of days.")
+                    error_msg("Please enter a valid number of days.")
             else:
-                print("Please specify the number of days.")
+                info_msg("Please specify the number of days.")
         elif command == "add-notes":
             print(add_note_to_contact(args, book))
         elif command == "edit-note":
@@ -100,7 +123,7 @@ def main():
         elif command == "delete-contact":
             print(delete_contact(args, book))
         else:
-            print("Invalid command.")
+            error_msg(f"Pardon sir, \"{user_input}\" command is invalid!")
 
     save_data(book)
 
