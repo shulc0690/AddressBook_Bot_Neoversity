@@ -2,6 +2,7 @@ from collections import UserDict
 from datetime import datetime
 import re
 from typing import List
+from special_efects import *
 
 
 class Field:
@@ -25,8 +26,8 @@ class Phone(Field):
     def validate_phone(self):
         # Перевірка, чи номер має 10 цифр
         if len(self.value) != 10 or not self.value.isdigit():
-            raise ValueError(
-                "Invalid phone number format. Please provide a 10-digit numeric phone number.")
+            combed_msg = error_msg4return("Invalid phone number format. Please provide a 10-digit numeric phone number.") 
+            raise ValueError(combed_msg)
 
 
 class Birthday(Field):
@@ -34,7 +35,8 @@ class Birthday(Field):
         try:
             self.value = datetime.strptime(value, "%d.%m.%Y")
         except ValueError:
-            raise ValueError("Invalid date format. Use DD.MM.YYYY")
+            combed_msg = error_msg4return("Invalid date format. Use DD.MM.YYYY")
+            raise ValueError(combed_msg)
 
 
 class Email(Field):
@@ -45,7 +47,8 @@ class Email(Field):
     def validate_email(self):
         email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
         if not re.match(email_regex, self.value):
-            raise ValueError("Invalid email format. Please provide a valid email address.")
+            combed_msg = error_msg4return("Invalid email format. Please provide a valid email address.")
+            raise ValueError(combed_msg)
 
 class Address(Field):
     def __init__(self, value):
@@ -98,7 +101,8 @@ class Record:
         if self.birthday is None:
             self.birthday = birthday
         else:
-            raise ValueError("Birthday already exists")
+            combed_msg = error_msg4return("Birthday already exists") 
+            raise ValueError(combed_msg)
 
     def show_birthday(self):
         return self.birthday
@@ -107,26 +111,28 @@ class Record:
         if self.email is None:
             self.email = Email(email)
         else:
-            raise ValueError("Email already exists.")
+            combed_msg = error_msg4return("Email already exists") 
+            raise ValueError(combed_msg)
 
     def add_address(self, address):
         if self.address is None:
             self.address = Address(address)
         else:
-            raise ValueError("Address already exists.")
+            combed_msg = error_msg4return("Address already exists") 
+            raise ValueError(combed_msg)
     
     def add_note(self, title, content):
         self.notes.append(Note(title, content))
 
     def show_notes(self):
         if not self.notes:
-            return "No notes available."
+            return info_msg4return("No notes available.")
         return "\n".join(f"Title: {note.title}, Content: {note.content}, Tags: {', '.join(note.tags)}" for note in self.notes)
     
     def find_notes_by_tag(self, tag):
         matching_notes = [note for note in self.notes if tag in note.tags]
         if not matching_notes:
-            return f"No notes found with the tag: {tag}"
+            return info_msg4return(f"No notes found with the tag: {tag}")
         return matching_notes
     
     def sort_notes_by_tags(self):
@@ -134,10 +140,10 @@ class Record:
         return sorted_notes
     
     def __str__(self):
-        last_name_str = self.last_name if self.last_name else "No last name"
+        last_name_str = self.last_name if self.last_name else info_msg("No last name")
         phones_str = '; '.join(p.value for p in self.phones)
-        email_str = self.email.value if self.email else "No email"
-        address_str = self.address.value if self.address else "No address"
+        email_str = self.email.value if self.email else info_msg("No email")
+        address_str = self.address.value if self.address else info_msg("No address")
         
         if isinstance(self.birthday, Birthday):
             birthday_str = self.birthday.value.strftime('%d.%m.%Y')
@@ -147,7 +153,7 @@ class Record:
             birthday_str = "No birthday"
             
         notes_str = self.show_notes()
-        return f"Name: {self.name.value}, Last Name: {last_name_str}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}, Notes: {notes_str}"
+        return f"Name: {self.name.value}, Phone: {phones_str}, Email: {email_str}, Address: {address_str}, Birthday: {birthday_str}, Notes: {notes_str}"
 
 
 class AddressBook(UserDict):
