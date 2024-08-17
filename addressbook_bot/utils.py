@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from special_efects import *
 from rich.console import Console
 from rich.table import Table
-from rich import print
+# from rich import print
 
 console = Console()
 
