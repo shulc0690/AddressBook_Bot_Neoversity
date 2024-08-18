@@ -716,22 +716,55 @@ def edit_contact_full(args, book: AddressBook):
 
 @input_error
 def delete_phone(args, book):
-    if len(args) < 2:
-        return error_msg4return(
-            "Error: Please provide a contact name and the phone number to delete."
-        )
-    name, phone_number, *_ = args
+    if len(args) < 1:
+        return error_msg4return("Error: Please provide a contact name.")
+
+    name = args[0]
     record = book.find(name)
 
     if record is None:
         return info_msg4return("Contact does not exist.")
 
-    if not record.find_phone(phone_number):
-        return info_msg4return(f"{name} does not have this phone number.")
+    while True:
+        if len(record.phones) > 1:
+            main_msg("Select the phone number you want to delete:")
+            for i, phone in enumerate(record.phones, start=1):
+                main_msg(f"{i}. {phone.value}")
+            main_msg(f"{i+1}. Back to main menu")
 
-    record.remove_phone(phone_number)
-    return info_msg4return(f"Phone number {phone_number} for {name} has been deleted.")
+            phone_number_choice = input(
+                    main_msg4return(
+                        "Enter the number of the phone you want to delete: "
+                    )
+                ).strip()
+            if phone_number_choice.isdigit():
+                phone_number_choice = int(phone_number_choice)
+                if 1 <= phone_number_choice <= len(record.phones):
+                    phone2remove = record.phones[phone_number_choice - 1].value
+                    try:
+                        if not record.find_phone(phone2remove):
+                            return info_msg4return(f"{name} does not have this phone number.")
 
+                        record.remove_phone(phone2remove)
+                        return info_msg4return(f"Phone number {phone2remove} for {name} has been deleted.")
+                    except ValueError as e:
+                        error_msg(f"Error: {e}.")
+                elif phone_number_choice == len(record.phones) + 1:
+                    return info_msg4return("Exiting main menu.")
+                else:
+                    info_msg("Invalid choice. No phone number was deleted.")
+            else:
+                info_msg("Invalid input. Enter only digit!")
+        else:
+            phone2remove = record.phones[0].value
+            try:
+                if not record.find_phone(phone2remove):
+                    return info_msg4return(f"{name} does not have this phone number.")
+
+                record.remove_phone(phone2remove)
+                return info_msg4return(f"Phone number {phone2remove} for {name} has been deleted.")
+            except ValueError as e:
+                error_msg(f"Error: {e}.")
 
 @input_error
 def delete_contact(args, book: AddressBook):
