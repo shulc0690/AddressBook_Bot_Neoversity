@@ -5,28 +5,52 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style as prompt_style
 from special_efects import *
-import pathlib
 
 
 # Список доступних команд
-COMMANDS = ['commands', 'hello', 'add-contact', 'edit-phone', 'delete-phone', 'edit-contact', 'show-contact', 'show-address-book', 'search',
-            'add-birthday', 'show-birthday', 'edit-birthday', 'delete-birthday', 'add-notes', 'edit-note', 'delete-note', 'birthdays', 
-            'edit-email', 'delete-email', 'edit-address', 'delete-address','search-notes-by-tag', 'sort-notes-by-tags', 'delete-contact', 'close', 'exit', 'q']
+COMMANDS = [
+    "commands",
+    "add-contact",
+    "delete-contact",
+    "edit-contact",
+    "show-contact",
+    "edit-phone",
+    "delete-phone",
+    "show-address-book",
+    "search",
+    "add-birthday",
+    "show-birthday",
+    "edit-birthday",
+    "delete-birthday",
+    "birthdays",
+    "add-notes",
+    "edit-note",
+    "delete-note",
+    "search-notes-by-tag",
+    "sort-notes-by-tags",
+    "edit-email",
+    "delete-email",
+    "edit-address",
+    "delete-address",
+    "close",
+    "exit",
+    "q",
+]
 
-prompt_style = prompt_style.from_dict({
-    'prompt': 'ansicyan bold',  # prompt style
-    'completion-menu.completion': 'bg:ansiblack fg:ansigreen',  
-    'completion-menu.completion.current': 'bg:ansiyellow fg:ansiblack',
-    'completion-menu.completion.current': 'bg:ansiblack fg:ansigreen',
-})
-# Автозаповнення команд
+prompt_style = prompt_style.from_dict(
+    {
+        "prompt": "ansicyan bold",  # prompt style
+        "completion-menu.completion": "bg:ansiblack fg:ansigreen",
+        "completion-menu.completion.current": "bg:ansiblack fg:ansigreen",
+    }
+)
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
-gur_logo =  "data/gur_logo.txt"
 
 def save_data(book, filename="addressbook.pkl"):
-    with open(filename, 'wb') as file:
+    with open(filename, "wb") as file:
         pickle.dump(book, file)
+
 
 def load_data(filename="addressbook.pkl"):
     try:
@@ -35,15 +59,17 @@ def load_data(filename="addressbook.pkl"):
     except FileNotFoundError:
         return AddressBook()
 
+
 def heder():
-    with open(gur_logo, 'r', encoding='ascii') as fh:
+    gur_logo = "data/gur_logo.txt"
+    with open(gur_logo, "r", encoding="ascii") as fh:
         try:
-            heder = fh.read()
-            logo_style(heder)
+            header = fh.read()
+            logo_style(header)
         except FileNotFoundError:
             error_msg(f"File '{gur_logo}' not found.")
         except IOError:
-            error_msg(f"Something went wrong while reading '{gur_logo}'.") 
+            error_msg(f"Something went wrong while reading '{gur_logo}'.")
 
 
 def main():
@@ -52,7 +78,7 @@ def main():
     session = PromptSession(completer=command_completer)
 
     info_msg("Hello my friend! Welcome to Budanov note bot!")
-    info_msg("Enter command \"commands\" to see all commands.")
+    info_msg('Enter command "commands" to see all commands.')
 
     while True:
         user_input = session.prompt(main_msg("Enter a command: "), style=prompt_style)
@@ -68,8 +94,6 @@ def main():
             break
         elif command == "commands":
             info_msg(str(COMMANDS))
-        elif command == "hello":
-            info_msg("How can I help you, sir? Any new target?")
         elif command == "add-contact":
             print(add_contact(args, book))
         elif command == "show-address-book":
@@ -79,8 +103,7 @@ def main():
         elif command == "show-contact":
             print(get_contact(args, book))
         elif command == "search":
-            for contact in search_contact(args, book):
-                info_msg(contact)
+            print(search_contact(args, book))
         elif command == "add-birthday":
             print(add_birthday(args, book))
         elif command == "show-birthday":
@@ -103,7 +126,7 @@ def main():
         elif command == "search-notes-by-tag":
             print(find_notes_by_tag(args, book))
         elif command == "sort-notes-by-tags":
-            print(sort_notes_by_tags(args, book))    
+            print(sort_notes_by_tags(args, book))
         elif command == "edit-email":
             print(change_email(args, book))
         elif command == "delete-email":
@@ -123,7 +146,7 @@ def main():
         elif command == "delete-contact":
             print(delete_contact(args, book))
         else:
-            error_msg(f"Pardon sir, \"{user_input}\" command is invalid!")
+            error_msg(f'Pardon sir, "{user_input}" command is invalid!')
 
     save_data(book)
 
