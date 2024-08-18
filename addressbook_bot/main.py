@@ -1,3 +1,4 @@
+from helper import build_help, commands
 from models import AddressBook
 from utils import *
 import pickle
@@ -6,37 +7,6 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style as prompt_style
 from special_efects import *
 
-
-# Список доступних команд
-COMMANDS = [
-    "commands",
-    "add-contact",
-    "delete-contact",
-    "edit-contact",
-    "show-contact",
-    "edit-phone",
-    "delete-phone",
-    "show-address-book",
-    "search",
-    "add-birthday",
-    "show-birthday",
-    "edit-birthday",
-    "delete-birthday",
-    "birthdays",
-    "add-notes",
-    "edit-note",
-    "delete-note",
-    "search-notes-by-tag",
-    "sort-notes-by-tags",
-    "edit-email",
-    "delete-email",
-    "edit-address",
-    "delete-address",
-    "close",
-    "exit",
-    "q",
-]
-
 prompt_style = prompt_style.from_dict(
     {
         "prompt": "ansicyan bold",  # prompt style
@@ -44,7 +14,8 @@ prompt_style = prompt_style.from_dict(
         "completion-menu.completion.current": "bg:ansiblack fg:ansigreen",
     }
 )
-command_completer = WordCompleter(COMMANDS, ignore_case=True)
+list_comands = [command["command"] for command in commands]
+command_completer = WordCompleter(list_comands, ignore_case=True)
 
 
 def save_data(book, filename="addressbook.pkl"):
@@ -60,7 +31,7 @@ def load_data(filename="addressbook.pkl"):
         return AddressBook()
 
 
-def heder():
+def header():
     gur_logo = "data/gur_logo.txt"
     with open(gur_logo, "r", encoding="ascii") as fh:
         try:
@@ -74,11 +45,11 @@ def heder():
 
 def main():
     book = load_data()
-    heder()
+    header()
     session = PromptSession(completer=command_completer)
 
     info_msg("Hello my friend! Welcome to Budanov note bot!")
-    info_msg('Enter command "commands" to see all commands.')
+    info_msg('Enter command "help" to see all commands.')
 
     while True:
         user_input = session.prompt(main_msg("Enter a command: "), style=prompt_style)
@@ -92,14 +63,14 @@ def main():
             info_msg("Goodbye, sir! Glory to Ukraine!")
             angry_style("Death to enemies!")
             break
-        elif command == "commands":
-            info_msg(str(COMMANDS))
+        elif command == "help":
+            build_help()
         elif command == "add-contact":
             print(add_contact(args, book))
         elif command == "show-address-book":
             print(show_address_book(book))
         elif command == "edit-phone":
-            print(edit_contact(args, book))
+            print(edit_phone(args, book))
         elif command == "show-contact":
             print(get_contact(args, book))
         elif command == "search":

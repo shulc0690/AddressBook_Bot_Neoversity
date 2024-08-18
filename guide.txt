@@ -1,3 +1,97 @@
+*** Додавання контакту: ***
+Команда: add-contact
+Синтаксис: add-contact <ім'я контакту>
+Приклад:
+add-contact John
+Enter last name (or press Enter to skip): 
+Enter phone number (10 digits) (or press Enter to skip): 8956230147
+Enter email address (or press Enter to skip): 
+Enter address (or press Enter to skip): 
+Enter birthday (DD.MM.YYYY) (or press Enter to skip): 10.08.1991
+
+*** Редагування контакту: ***
+Команда: edit-contact
+Синтаксис: edit-contact <ім'я контакту>
+Приклад:
+add-contact John
+Select what you want to edit:
+1. Name
+2. Last Name
+3. Phone
+4. Email
+5. Address
+6. Birthday
+7. Notes
+8. Exit
+Enter the number: 5
+Enter new address: Хрещатик
+
+*** Перегляд контакту: ***
+Команда: show-contact
+Синтаксис: show-contact <ім'я контакту>
+Приклад:
+show-contact John
+
+*** Видалення контакту: ***
+Команда: delete-contact
+Синтаксис: delete-contact <ім'я контакту>
+Приклад:
+delete-contact John
+
+*** Редагування номера телефона: ***
+Команда: edit-phone
+Синтаксис: edit-phone <ім'я контакту> <старий номер> <новий номер>
+Приклад:
+edit-phone John 0123654789 8523697410
+
+*** Видалення телефона: ***
+Команда: delete-phone
+Синтаксис: delete-phone <ім'я контакту> <номер телефона>
+Приклад:
+delete-phone John 0123654789
+
+*** Перегляд всіх контактів: ***
+Команда: show-address-book
+Синтаксис: show-address-book
+Приклад:
+show-address-book
+
+*** Пошук контактів за змістом по всіх атрібутах: ***
+Команда: search 
+Синтаксис: search <Текст пошуку>
+Приклад:
+search 2024
+
+*** Додавання дня нарождження: ***
+Команда: add-birthday
+Синтаксис: add-birthday <ім'я контакту> <дата народження>
+Приклад:
+add-birthday John 08.08.1991
+
+*** Перегляд дня нарождження контакта: ***
+Команда: show-birthday
+Синтаксис: show-birthday <ім'я контакту>
+Приклад:
+show-birthday John
+
+*** Редагування дня нарождження контакта: ***
+Команда: edit-birthday
+Синтаксис: edit-birthday <ім'я контакту> <дата народження>
+Приклад:
+edit-birthday John 08.08.1991
+
+*** Видалення дня нарождження контакта: ***
+Команда: delete-birthday
+Синтаксис: delete-birthday <ім'я контакту>
+Приклад:
+delete-birthday John
+
+*** Перегляд список контактів, у яких день народження через задану кількість днів від поточної дати: ***
+Команда: birthdays
+Синтаксис: birthdays
+Приклад:
+birthdays
+
 *** Додавання нотаток: ***
 Команда: add-notes
 Синтаксис: add-notes <ім'я контакту>
@@ -5,6 +99,7 @@
 add-notes John
 Enter note title: Meeting
 Enter note content: Discuss project details
+Enter tags (separated by commas): meeting, project
 
 *** Редагування нотаток: ***
 Команда: edit-note
@@ -28,6 +123,18 @@ Enter new note content (or press Enter to keep the current content): Updated dis
 delete-note John
 1. Updated Meeting: Updated discussion points.
 Enter the number of the note you want to delete: 1
+
+*** Пошук нотатків по тегу: ***
+Команда: search-notes-by-tag
+Синтаксис: search-notes-by-tag <ім'я контакту> <тег>
+Приклад:
+search-notes-by-tag John meeting
+
+*** Сортування нотатків по тегу: ***
+Команда: sort-notes-by-tags
+Синтаксис: sort-notes-by-tags <ім'я контакту> <тег>
+Приклад:
+sort-notes-by-tag John meeting
 
 *** Змінити email: ***
 Команда: change-email
