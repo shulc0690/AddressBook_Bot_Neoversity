@@ -148,10 +148,10 @@ class Record:
         return sorted_notes
 
     def __str__(self):
-        last_name_str = ' ' + self.last_name if self.last_name else ''
+        last_name_str = " " + self.last_name if self.last_name else ""
         phones_str = "; ".join(p.value for p in self.phones)
-        email_str = self.email.value if self.email else ''
-        address_str = self.address.value if self.address else ''
+        email_str = self.email.value if self.email else ""
+        address_str = self.address.value if self.address else ""
 
         if isinstance(self.birthday, Birthday):
             birthday_str = self.birthday.value.strftime("%d.%m.%Y")
@@ -160,9 +160,11 @@ class Record:
         else:
             birthday_str = "No birthday"
         notes_str = self.show_notes()
-        return f"Name: {self.name.value + last_name_str}, Phone: {phones_str}, " + \
-               f"Email: {email_str}, Address: {address_str}, " + \
-               f"Birthday: {birthday_str}, Notes: {notes_str}"
+        return (
+            f"Name: {self.name.value + last_name_str}, Phone: {phones_str}, "
+            + f"Email: {email_str}, Address: {address_str}, "
+            + f"Birthday: {birthday_str}, Notes: {notes_str}"
+        )
 
 
 class AddressBook(UserDict):
@@ -265,12 +267,12 @@ class AddressBook(UserDict):
                 notes_str = "No notes"
 
             contacts.append(
-                f"First Name: {record.name.value}\n" + \
-                f"Last Name: {last_name_str}\n" + \
-                f"Phone: {phones_str}\n" + \
-                f"Email: {email_str}\n" + \
-                f"Address: {address_str}\n" + \
-                f"Birthday: {birthday_str}\n" + \
-                f"Notes:\n {notes_str}"
+                f"First Name: {record.name.value}\n"
+                + f"Last Name: {last_name_str}\n"
+                + f"Phone: {phones_str}\n"
+                + f"Email: {email_str}\n"
+                + f"Address: {address_str}\n"
+                + f"Birthday: {birthday_str}\n"
+                + f"Notes:\n {notes_str}"
             )
         return "\n\n".join(contacts)
