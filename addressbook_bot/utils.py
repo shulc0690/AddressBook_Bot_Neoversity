@@ -48,19 +48,19 @@ def edit_phone_number(record):
         return info_msg4return("This contact has no phone numbers to edit.")
 
     if len(record.phones) > 1:
-        print("Select the phone number you want to edit:")
+        main_msg("Select the phone number you want to edit:")
         for i, phone in enumerate(record.phones, start=1):
-            print(f"{i}. {phone.value}")
+            main_msg(f"{i}. {phone.value}")
 
         phone_number_choice = int(
-            input("Enter the number of the phone you want to edit: ").strip()
+            input(info_msg4return("Enter the number of the phone you want to edit: ")).strip()
         )
 
         if 1 <= phone_number_choice <= len(record.phones):
             old_phone = record.phones[phone_number_choice - 1].value
             for attempt in range(2):
-                new_phone = input(
-                    f"Enter new phone number to replace {old_phone}: "
+                new_phone = input(info_msg4return(
+                    f"Enter new phone number to replace {old_phone}: ")
                 ).strip()
                 try:
                     validate_phone(new_phone)
@@ -74,8 +74,8 @@ def edit_phone_number(record):
     else:
         old_phone = record.phones[0].value
         for attempt in range(2):
-            new_phone = input(
-                f"Enter new phone number to replace {old_phone}: "
+            new_phone = input(info_msg4return(
+                f"Enter new phone number to replace {old_phone}: ")
             ).strip()
             try:
                 validate_phone(new_phone)
@@ -649,37 +649,37 @@ def edit_contact_full(args, book: AddressBook):
 
         elif choice == "3":
             while True:
-                print("Select an option:")
-                print("1. Edit existing phone number")
-                print("2. Add new phone number")
-                print("3. Back to main menu")
+                main_msg("Select an option:")
+                main_msg("1. Edit existing phone number")
+                main_msg("2. Add new phone number")
+                main_msg("3. Back to main menu")
 
                 phone_choice = input("Enter the number: ").strip()
 
                 if phone_choice == "1":
                     if not record.phones:
-                        print("This contact has no phone numbers to edit.")
+                        info_msg("This contact has no phone numbers to edit.")
                     else:
                         edit_phone_number(record)
 
                 elif phone_choice == "2":
                     for attempt in range(2):
-                        new_phone = input("Enter new phone number: ").strip()
+                        new_phone = input(info_msg4return("Enter new phone number: ")).strip()
                         try:
                             validate_phone(new_phone)
                             record.add_phone(new_phone)
-                            print("New phone number added successfully.")
+                            main_msg("New phone number added successfully.")
                             break
                         except ValueError as e:
-                            print(f"Error: {e}. You have {1 - attempt} attempts left.")
+                            error_msg(f"Error: {e}. You have {1 - attempt} attempts left.")
                     else:
-                        print("New phone number not added.")
+                        main_msg("New phone number not added.")
 
                 elif phone_choice == "3":
                     break
 
                 else:
-                    print("Invalid choice. Please select a valid option.")
+                    main_msg("Invalid choice. Please select a valid option.")
 
         elif choice == "4":  # Введення нового email
             for attempt in range(2):
