@@ -1,3 +1,4 @@
+from special_efects import *
 # Список доступних команд
 commands = [
     {
@@ -158,10 +159,10 @@ commands = [
 
 
 def build_help():
-    print(f"Commands:")
+    main_msg(f"Commands:")
     section = ""
     for command in commands:
         if section != command["object"]:
-            print(f"  {command['object']}")
-        print(f"      {command['syntax']:<60}{command['description']:<60}")
+            main_msg(f"  {command['object']}")
+        main_msg(f"      {command['syntax']:<60}{command['description']:<60}")
         section = command["object"]

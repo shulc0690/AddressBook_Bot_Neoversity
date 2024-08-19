@@ -269,7 +269,7 @@ def print_contacts_table(book):
         elif isinstance(record.birthday, str):
             birthday_str = record.birthday
         else:
-            birthday_str = "Alive yet"
+            birthday_str = "No birthday"
         notes_str = "\n".join(
             f"{i+1}. {note.title}: {note.content}"
             for i, note in enumerate(record.notes)
