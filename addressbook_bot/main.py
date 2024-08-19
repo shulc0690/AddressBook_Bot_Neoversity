@@ -50,10 +50,11 @@ def main():
 
     info_msg("_____________________________________________\n")
     info_msg("Hello my friend! Welcome to Budanov note bot!\n")
-    info_msg("Enter command \"help\" to see all commands.\n")
+    info_msg('Enter command "help" to see all commands.\n')
 
     while True:
-        user_input = session.prompt(main_msg("Enter a command: "), style=prompt_style)
+        user_input = session.prompt(
+            main_msg("Enter a command: "), style=prompt_style)
         if not user_input.strip():
             info_msg("No command entered. Please enter a command.")
             continue

@@ -31,14 +31,14 @@ commands = [
     {
         "command": "edit-phone",
         "description": "Edit phone number of contact",
-        "syntax": "edit-phone <name> <old phone> <new phone>",
-        "example": "edit-phone John 0123654789 8523697410",
+        "syntax": "edit-phone <name>",
+        "example": "edit-phone John",
         "object": "phone",
     },
     {
         "command": "delete-phone",
         "description": "Delete phone number from contact",
-        "syntax": "delete-phone <name> <phone>",
+        "syntax": "delete-phone <name>",
         "example": "delete-phone John",
         "object": "phone",
     },

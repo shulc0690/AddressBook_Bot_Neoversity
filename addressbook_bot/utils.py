@@ -27,7 +27,8 @@ def validate_phone(phone):
     if re.fullmatch(r"\d{10}", phone):
         return True
     else:
-        combed_msg = error_msg4return("Phone number must contain exactly 10 digits.")
+        combed_msg = error_msg4return(
+            "Phone number must contain exactly 10 digits.")
         raise ValueError(combed_msg)
 
 
@@ -40,6 +41,49 @@ def validate_name(name):
             "Name and Last Name must contain only letters and be a single word."
         )
         raise ValueError(combed_msg)
+
+
+def edit_phone_number(record):
+    if not record.phones:
+        return info_msg4return("This contact has no phone numbers to edit.")
+
+    if len(record.phones) > 1:
+        print("Select the phone number you want to edit:")
+        for i, phone in enumerate(record.phones, start=1):
+            print(f"{i}. {phone.value}")
+
+        phone_number_choice = int(
+            input("Enter the number of the phone you want to edit: ").strip()
+        )
+
+        if 1 <= phone_number_choice <= len(record.phones):
+            old_phone = record.phones[phone_number_choice - 1].value
+            for attempt in range(2):
+                new_phone = input(
+                    f"Enter new phone number to replace {old_phone}: "
+                ).strip()
+                try:
+                    validate_phone(new_phone)
+                    record.edit_phone(old_phone, new_phone)
+                    return info_msg4return("Phone number updated successfully.")
+                except ValueError as e:
+                    print(f"Error: {e}. You have {1 - attempt} attempts left.")
+            return info_msg4return("Phone number not updated.")
+        else:
+            return info_msg4return("Invalid choice. No phone number was edited.")
+    else:
+        old_phone = record.phones[0].value
+        for attempt in range(2):
+            new_phone = input(
+                f"Enter new phone number to replace {old_phone}: "
+            ).strip()
+            try:
+                validate_phone(new_phone)
+                record.edit_phone(old_phone, new_phone)
+                return info_msg4return("Phone number updated successfully.")
+            except ValueError as e:
+                print(f"Error: {e}. You have {1 - attempt} attempts left.")
+        return info_msg4return("Phone number not updated.")
 
 
 @input_error
@@ -100,7 +144,8 @@ def add_contact(args, book: AddressBook):
             error_msg(e)
 
     for i in range(2):
-        combed_msg = info_msg4return("Enter email address (or press Enter to skip): ")
+        combed_msg = info_msg4return(
+            "Enter email address (or press Enter to skip): ")
         email = input(combed_msg).strip()
         if not email:
             break
@@ -111,7 +156,8 @@ def add_contact(args, book: AddressBook):
             error_msg(e)
 
     for i in range(2):
-        combed_msg = info_msg4return("Enter address (or press Enter to skip): ")
+        combed_msg = info_msg4return(
+            "Enter address (or press Enter to skip): ")
         address = input(combed_msg).strip()
         if not address:
             break
@@ -136,18 +182,16 @@ def add_contact(args, book: AddressBook):
 
 @input_error
 def edit_phone(args, book: AddressBook):
-    """Function changes existing contact."""
-    name, old_phone, new_phone, *_ = args
+    if len(args) < 1:
+        return error_msg4return("Error: Please provide a contact name.")
+
+    name = args[0]
     record = book.find(name)
-    message = "Phone updated."
 
     if record is None:
-        message = "Contact does not exists."
-    if new_phone and old_phone:
-        record.edit_phone(old_phone, new_phone)
+        return info_msg4return("Contact does not exist.")
 
-    combed_msg = info_msg4return(message)
-    return combed_msg
+    return edit_phone_number(record)
 
 
 @input_error
@@ -178,12 +222,14 @@ def search_contact(args, book: AddressBook):
         return combed_msg
     return print_contacts_table(records)
 
+
 def print_the_contact_in_table(record):
     tmp_book = AddressBook()
     tmp_book.add_record(record)
 
     print_contacts_table(tmp_book)
     del tmp_book
+
 
 def print_contacts_table(book):
     table = Table(
@@ -202,7 +248,8 @@ def print_contacts_table(book):
     for record in book.data.values():
         last_name_str = record.last_name if record.last_name else "No last name"
         phones_str = (
-            "; ".join(p.value for p in record.phones) if record.phones else "No phone"
+            "; ".join(
+                p.value for p in record.phones) if record.phones else "No phone"
         )
         email_str = (
             record.email.value
@@ -327,7 +374,7 @@ def birthdays(book: AddressBook, days: int):
                 upcoming_birthdays.append(
                     {
                         "name": record.name.value,
-                        "birthday": birthday.strftime("%d.%m.%Y"),
+                        "birthday": birthday.strftime("%d.%m"),
                     }
                 )
 
@@ -365,7 +412,8 @@ def add_note_to_contact(args, book: AddressBook):
 
 def find_notes_by_tag(args, book: AddressBook):
     if len(args) < 2:
-        combed_msg = error_msg4return("Error: Please provide a contact name and a tag.")
+        combed_msg = error_msg4return(
+            "Error: Please provide a contact name and a tag.")
         return combed_msg
 
     name = args[0]
@@ -481,7 +529,8 @@ def delete_note_from_contact(args, book: AddressBook):
 
     note_number = int(
         input(
-            info_msg4return("Enter the number of the note you want to delete: ")
+            info_msg4return(
+                "Enter the number of the note you want to delete: ")
         ).strip()
     )
     if note_number < 1 or note_number > len(record.notes):
@@ -572,12 +621,14 @@ def edit_contact_full(args, book: AddressBook):
                 except ValueError as e:
                     if attempt < 1:
                         error_msg(f"Error: {e}. You have {1 - attempt} attempt left.")
-                        new_name = input(info_msg4return("Re-enter new name: ")).strip()
+                        new_name = input(info_msg4return(
+                            "Re-enter new name: ")).strip()
                     else:
                         error_msg(f"Error: {e}. Name not updated.")
 
         elif choice == "2":
-            new_last_name = input(main_msg4return("Enter new last name: ")).strip()
+            new_last_name = input(main_msg4return(
+                "Enter new last name: ")).strip()
             for attempt in range(2):
                 try:
                     validate_name(new_last_name)
@@ -593,100 +644,44 @@ def edit_contact_full(args, book: AddressBook):
                     else:
                         error_msg(f"Error: {e}. Last Name not updated.")
 
-        elif choice == "3":  # Вибір пункту "Phone"
+        elif choice == "3":
             while True:
-                main_msg("Select an option:")
-                main_msg("1. Edit existing phone number")
-                main_msg("2. Add new phone number")
-                main_msg("3. Back to main menu")
+                print("Select an option:")
+                print("1. Edit existing phone number")
+                print("2. Add new phone number")
+                print("3. Back to main menu")
 
-                phone_choice = input(main_msg4return("Enter the number: ")).strip()
+                phone_choice = input("Enter the number: ").strip()
 
                 if phone_choice == "1":
-                    if not record.phones:  # Перевірка на порожній список телефонів
-                        info_msg("This contact has no phone numbers to edit.")
-                        continue
+                    if not record.phones:
+                        print("This contact has no phone numbers to edit.")
+                    else:
+                        edit_phone_number(record)
 
-                    if len(record.phones) > 1:  # Якщо більше одного номера телефону
-                        main_msg("Select the phone number you want to edit:")
-                        for i, phone in enumerate(record.phones, start=1):
-                            main_msg(f"{i}. {phone.value}")
-
-                        phone_number_choice = int(
-                            input(
-                                main_msg4return(
-                                    "Enter the number of the phone you want to edit: "
-                                )
-                            ).strip()
-                        )
-
-                        if 1 <= phone_number_choice <= len(record.phones):
-                            old_phone = record.phones[phone_number_choice - 1].value
-                            for attempt in range(2):
-                                new_phone = input(
-                                    main_msg4return(
-                                        f"Enter new phone number to replace {old_phone}: "
-                                    )
-                                ).strip()
-                                try:
-                                    validate_phone(new_phone)
-                                    record.edit_phone(old_phone, new_phone)
-                                    info_msg("Phone number updated successfully.")
-                                    break
-                                except ValueError as e:
-                                    error_msg(
-                                        f"Error: {e}. You have {1 - attempt} attempts left."
-                                    )
-                            else:
-                                info_msg("Phone number not updated.")
-                        else:
-                            info_msg("Invalid choice. No phone number was edited.")
-                    else:  # Якщо лише один номер телефону
-                        old_phone = record.phones[0].value
-                        for attempt in range(2):
-                            new_phone = input(
-                                main_msg4return(
-                                    f"Enter new phone number to replace {old_phone}: "
-                                )
-                            ).strip()
-                            try:
-                                validate_phone(new_phone)
-                                record.edit_phone(old_phone, new_phone)
-                                info_msg("Phone number updated successfully.")
-                                break
-                            except ValueError as e:
-                                error_msg(
-                                    f"Error: {e}. You have {1 - attempt} attempts left."
-                                )
-                        else:
-                            info_msg("Phone number not updated.")
-
-                elif phone_choice == "2":  # Додати новий номер телефону
+                elif phone_choice == "2":
                     for attempt in range(2):
-                        new_phone = input(
-                            main_msg4return("Enter new phone number: ")
-                        ).strip()
+                        new_phone = input("Enter new phone number: ").strip()
                         try:
                             validate_phone(new_phone)
                             record.add_phone(new_phone)
-                            info_msg("New phone number added successfully.")
+                            print("New phone number added successfully.")
                             break
                         except ValueError as e:
-                            error_msg(
-                                f"Error: {e}. You have {1 - attempt} attempts left."
-                            )
+                            print(f"Error: {e}. You have {1 - attempt} attempts left.")
                     else:
-                        info_msg("New phone number not added.")
+                        print("New phone number not added.")
 
                 elif phone_choice == "3":
                     break
 
                 else:
-                    info_msg("Invalid choice. Please select a valid option.")
+                    print("Invalid choice. Please select a valid option.")
 
         elif choice == "4":  # Введення нового email
             for attempt in range(2):
-                new_email = input(info_msg4return("Enter new email address: ")).strip()
+                new_email = input(info_msg4return(
+                    "Enter new email address: ")).strip()
                 try:
                     record.email = Email(new_email)
                     info_msg("Email updated successfully.")
