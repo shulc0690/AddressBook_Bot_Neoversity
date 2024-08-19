@@ -243,7 +243,7 @@ def print_contacts_table(book):
     table.add_column("Phone", style="green", header_style="green")
     table.add_column("Email", style="cyan", header_style="green")
     table.add_column("Address", style="blue", header_style="green")
-    table.add_column("Birthday", style="yellow", header_style="green")
+    table.add_column("Liquidated", style="yellow", header_style="green")
     table.add_column("Notes", style="bright_black", header_style="green")
     for record in book.data.values():
         last_name_str = record.last_name if record.last_name else "No last name"
