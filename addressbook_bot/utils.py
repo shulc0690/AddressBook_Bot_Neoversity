@@ -154,7 +154,8 @@ def add_contact(args, book: AddressBook):
             record.add_email(email)
             break
         except ValueError as e:
-            error_msg(e)
+            print(str(e))
+            continue
 
     for i in range(2):
         combed_msg = info_msg4return(
@@ -176,7 +177,8 @@ def add_contact(args, book: AddressBook):
             record.add_birthday(birthday)
             break
         except ValueError as e:
-            error_msg(e)
+            print(str(e))
+            continue
     combed_msg = info_msg4return(message)
     return combed_msg
 
