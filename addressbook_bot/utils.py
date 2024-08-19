@@ -160,7 +160,7 @@ def get_contact(args, book: AddressBook):
     record = book.find(name)
     if record is None:
         return info_msg4return("Contact does not exist.")
-    return info_msg4return(str(record))
+    print_the_contact_in_table(record)
 
 
 @input_error
@@ -178,6 +178,57 @@ def search_contact(args, book: AddressBook):
         return combed_msg
     return print_contacts_table(records)
 
+def print_the_contact_in_table(record):
+    table = Table(
+        title="TARGET",
+        show_lines=True,
+        title_style="green",
+        border_style="green",
+    )
+    table.add_column("Name", style="cyan", no_wrap=True, header_style="green")
+    table.add_column("Last Name", style="cyan", header_style="green")
+    table.add_column("Phone", style="green", header_style="green")
+    table.add_column("Email", style="cyan", header_style="green")
+    table.add_column("Address", style="blue", header_style="green")
+    table.add_column("Birthday", style="yellow", header_style="green")
+    table.add_column("Notes", style="bright_black", header_style="green")
+
+    last_name_str = record.last_name if record.last_name else "No last name"
+    phones_str = (
+        "; ".join(p.value for p in record.phones) if record.phones else "No phone"
+    )
+    email_str = (
+        record.email.value
+        if hasattr(record, "email") and record.email
+        else "No email"
+    )
+    address_str = (
+        record.address.value
+        if hasattr(record, "address") and record.address
+        else "No address"
+    )
+    if isinstance(record.birthday, Birthday):
+        birthday_str = record.birthday.value.strftime("%d.%m.%Y")
+    elif isinstance(record.birthday, str):
+        birthday_str = record.birthday
+    else:
+        birthday_str = "Alive yet"
+    notes_str = "\n".join(
+        f"{i+1}. {note.title}: {note.content}"
+        for i, note in enumerate(record.notes)
+    )
+    if not notes_str:
+        notes_str = "No notes"
+    table.add_row(
+        record.name.value,
+        last_name_str,
+        phones_str,
+        email_str,
+        address_str,
+        birthday_str,
+        notes_str,
+    )
+    console.print(table)
 
 def print_contacts_table(book):
     table = Table(
