@@ -1,4 +1,4 @@
-from special_efects import *
+from budanov_blacklist.special_efects import *
 # Список доступних команд
 commands = [
     {

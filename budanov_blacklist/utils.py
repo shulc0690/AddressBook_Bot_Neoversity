@@ -1,7 +1,7 @@
-from models import AddressBook, Birthday, Record, Email, Address
+from budanov_blacklist.models import AddressBook, Birthday, Record, Email, Address
 import re
 from datetime import datetime, timedelta
-from special_efects import *
+from budanov_blacklist.special_efects import *
 from rich.console import Console
 from rich.table import Table
 

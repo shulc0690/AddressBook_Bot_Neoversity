@@ -1,11 +1,11 @@
-from helper import build_help, commands
-from models import AddressBook
-from utils import *
-import pickle
+from budanov_blacklist.helper import build_help, commands
+from budanov_blacklist.models import AddressBook
+from budanov_blacklist.utils import *
+from pickle import dump, load
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style as prompt_style
-from special_efects import *
+from budanov_blacklist.special_efects import *
 
 prompt_style = prompt_style.from_dict(
     {
@@ -20,13 +20,13 @@ command_completer = WordCompleter(list_comands, ignore_case=True)
 
 def save_data(book, filename="addressbook.pkl"):
     with open(filename, "wb") as file:
-        pickle.dump(book, file)
+        dump(book, file)
 
 
 def load_data(filename="addressbook.pkl"):
     try:
         with open(filename, "rb") as f:
-            return pickle.load(f)
+            return load(f)
     except FileNotFoundError:
         return AddressBook()
 

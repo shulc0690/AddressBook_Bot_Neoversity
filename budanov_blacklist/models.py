@@ -1,7 +1,7 @@
 from collections import UserDict
 from datetime import datetime
 import re
-from special_efects import *
+from budanov_blacklist.special_efects import *
 
 
 class Field:

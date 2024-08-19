@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="addressbook_bot",
-    version="0.0.3",
+    name="budanov_blacklist",
+    version="0.1.1",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -12,12 +12,12 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'run-bot=addressbook_bot.main:main',
+            'run-bot=budanov_blacklist.main:main',
         ],
     },
     author="project_team_01",
     author_email="project_team_01@gmail.com",
-    description="Best addressbook bot",
+    description="Budanov bot",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/shulc0690/AddressBook_Bot_Neoversity",
