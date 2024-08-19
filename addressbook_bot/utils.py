@@ -370,7 +370,7 @@ def birthdays(book: AddressBook, days: int):
                 upcoming_birthdays.append(
                     {
                         "name": record.name.value,
-                        "birthday": birthday.strftime("%d.%m.%Y"),
+                        "birthday": birthday.strftime("%d.%m"),
                     }
                 )
 
