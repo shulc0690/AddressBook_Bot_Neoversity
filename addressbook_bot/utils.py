@@ -178,6 +178,7 @@ def search_contact(args, book: AddressBook):
         return combed_msg
     return print_contacts_table(records)
 
+
 def print_the_contact_in_table(record):
     table = Table(
         title="TARGET",
@@ -198,9 +199,7 @@ def print_the_contact_in_table(record):
         "; ".join(p.value for p in record.phones) if record.phones else "No phone"
     )
     email_str = (
-        record.email.value
-        if hasattr(record, "email") and record.email
-        else "No email"
+        record.email.value if hasattr(record, "email") and record.email else "No email"
     )
     address_str = (
         record.address.value
@@ -214,8 +213,7 @@ def print_the_contact_in_table(record):
     else:
         birthday_str = "Alive yet"
     notes_str = "\n".join(
-        f"{i+1}. {note.title}: {note.content}"
-        for i, note in enumerate(record.notes)
+        f"{i+1}. {note.title}: {note.content}" for i, note in enumerate(record.notes)
     )
     if not notes_str:
         notes_str = "No notes"
@@ -229,6 +227,7 @@ def print_the_contact_in_table(record):
         notes_str,
     )
     console.print(table)
+
 
 def print_contacts_table(book):
     table = Table(
@@ -784,20 +783,22 @@ def delete_phone(args, book):
             main_msg(f"{i+1}. Back to main menu")
 
             phone_number_choice = input(
-                    main_msg4return(
-                        "Enter the number of the phone you want to delete: "
-                    )
-                ).strip()
+                main_msg4return("Enter the number of the phone you want to delete: ")
+            ).strip()
             if phone_number_choice.isdigit():
                 phone_number_choice = int(phone_number_choice)
                 if 1 <= phone_number_choice <= len(record.phones):
                     phone2remove = record.phones[phone_number_choice - 1].value
                     try:
                         if not record.find_phone(phone2remove):
-                            return info_msg4return(f"{name} does not have this phone number.")
+                            return info_msg4return(
+                                f"{name} does not have this phone number."
+                            )
 
                         record.remove_phone(phone2remove)
-                        return info_msg4return(f"Phone number {phone2remove} for {name} has been deleted.")
+                        return info_msg4return(
+                            f"Phone number {phone2remove} for {name} has been deleted."
+                        )
                     except ValueError as e:
                         error_msg(f"Error: {e}.")
                 elif phone_number_choice == len(record.phones) + 1:
@@ -813,9 +814,12 @@ def delete_phone(args, book):
                     return info_msg4return(f"{name} does not have this phone number.")
 
                 record.remove_phone(phone2remove)
-                return info_msg4return(f"Phone number {phone2remove} for {name} has been deleted.")
+                return info_msg4return(
+                    f"Phone number {phone2remove} for {name} has been deleted."
+                )
             except ValueError as e:
                 error_msg(f"Error: {e}.")
+
 
 @input_error
 def delete_contact(args, book: AddressBook):
