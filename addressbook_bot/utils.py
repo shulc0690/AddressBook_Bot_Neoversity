@@ -671,7 +671,7 @@ def edit_contact_full(args, book: AddressBook):
                             main_msg("New phone number added successfully.")
                             break
                         except ValueError as e:
-                            print(f"Error: {e}. You have {1 - attempt} attempts left.")
+                            error_msg(f"Error: {e}. You have {1 - attempt} attempts left.")
                     else:
                         main_msg("New phone number not added.")
 
