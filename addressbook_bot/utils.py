@@ -125,10 +125,8 @@ def add_contact(args, book: AddressBook):
                 break
             except ValueError as e:
                 if attempt < 1:
-                    error_msg(f"Error: {e}. You have {
-                              1 - attempt} attempt left.")
-                    last_name = input(main_msg4return(
-                        "Re-enter last name: ")).strip()
+                    error_msg(f"Error: {e}. You have {1 - attempt} attempt left.")
+                    last_name = input(main_msg4return("Re-enter last name: ")).strip()
                 else:
                     error_msg(f"Error: {e}. Last Name not added.")
 
@@ -664,8 +662,7 @@ def edit_contact_full(args, book: AddressBook):
                     break
                 except ValueError as e:
                     if attempt < 1:
-                        error_msg(f"Error: {e}. You have {
-                                  1 - attempt} attempt left.")
+                        error_msg(f"Error: {e}. You have {1 - attempt} attempt left.")
                         new_name = input(info_msg4return(
                             "Re-enter new name: ")).strip()
                     else:
@@ -682,8 +679,7 @@ def edit_contact_full(args, book: AddressBook):
                     break
                 except ValueError as e:
                     if attempt < 1:
-                        error_msg(f"Error: {e}. You have {
-                                  1 - attempt} attempt left.")
+                        error_msg(f"Error: {e}. You have {1 - attempt} attempt left.")
                         new_last_name = input(
                             info_msg4return("Re-enter new last name: ")
                         ).strip()
@@ -714,8 +710,7 @@ def edit_contact_full(args, book: AddressBook):
                             print("New phone number added successfully.")
                             break
                         except ValueError as e:
-                            print(f"Error: {e}. You have {
-                                  1 - attempt} attempts left.")
+                            print(f"Error: {e}. You have {1 - attempt} attempts left.")
                     else:
                         print("New phone number not added.")
 
@@ -734,8 +729,7 @@ def edit_contact_full(args, book: AddressBook):
                     info_msg("Email updated successfully.")
                     break
                 except ValueError as e:
-                    error_msg(f"Error: {e}. You have {
-                              1 - attempt} attempts left.")
+                    error_msg(f"Error: {e}. You have {1 - attempt} attempts left.")
             else:
                 info_msg("Email not updated.")
 
@@ -798,8 +792,7 @@ def delete_phone(args, book):
 
                         record.remove_phone(phone2remove)
                         return info_msg4return(
-                            f"Phone number {phone2remove} for {
-                                name} has been deleted."
+                            f"Phone number {phone2remove} for {name} has been deleted."
                         )
                     except ValueError as e:
                         error_msg(f"Error: {e}.")
