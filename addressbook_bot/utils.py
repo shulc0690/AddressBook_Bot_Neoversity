@@ -141,7 +141,8 @@ def add_contact(args, book: AddressBook):
             record.add_phone(phone)
             break
         except ValueError as e:
-            error_msg(e)
+            print(str(e))
+            continue
 
     for i in range(2):
         combed_msg = info_msg4return(
