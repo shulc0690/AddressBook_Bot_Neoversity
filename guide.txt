@@ -46,9 +46,9 @@ edit-phone John 0123654789 8523697410
 
 *** Видалення телефона: ***
 Команда: delete-phone
-Синтаксис: delete-phone <ім'я контакту> <номер телефона>
+Синтаксис: delete-phone <ім'я контакту>
 Приклад:
-delete-phone John 0123654789
+delete-phone John
 
 *** Перегляд всіх контактів: ***
 Команда: show-address-book

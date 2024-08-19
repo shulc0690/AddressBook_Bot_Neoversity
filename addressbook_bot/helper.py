@@ -38,7 +38,7 @@ commands = [
     {
         "command": "delete-phone",
         "description": "Delete phone number from contact",
-        "syntax": "delete-phone <name> <phone>",
+        "syntax": "delete-phone <name>",
         "example": "delete-phone John",
         "object": "phone",
     },
